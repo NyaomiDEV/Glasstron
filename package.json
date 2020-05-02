@@ -1,0 +1,28 @@
+{
+  "name": "glasstron",
+  "version": "0.0.1",
+  "description": "The go-to solution to Electron composition effects",
+  "main": "src/index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AryToNeX/Glasstron.git"
+  },
+  "keywords": [
+    "electron",
+    "glass",
+    "blur",
+    "composition",
+    "transparency",
+    "api"
+  ],
+  "author": "Naomi Calabretta <me@arytonex.pw> (http://arytonex.pw)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/AryToNeX/Glasstron/issues"
+  },
+  "homepage": "https://github.com/AryToNeX/Glasstron#readme",
+  "devDependencies": {
+    "electron": "^8.2.5"
+  }
+}
