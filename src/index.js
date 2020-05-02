@@ -20,21 +20,33 @@ const Module = require('module');
 const BrowserWindow = require('./browser_window.js');
 const Main = require('./main.js');
 
-module.exports = {
-	init: function(){
-		_inject();
-		_overrideEmit();
-	},
-	update: function(values){
-		return this.__main.staticToInstance().update(values);
-	},
-	getPlatformClass: function(){
-		return this.__main.staticToInstance().getCurrentPlatformClass();
-	},
-	__main: Main
-};
+const __module = findModule("__glasstron");
+if(typeof __module !== "undefined"){
+	module.exports = __module.exports;
+}else{
+	module.exports = {
+		init: function(){
+			_inject();
+			_overrideEmit();
+		},
+		update: function(values){
+			return Main.staticToInstance().update(values);
+		},
+		getPlatformClass: function(){
+			return Main.staticToInstance().getCurrentPlatformClass();
+		}
+	};
+}
+module.__glasstron = true;
 
 // ------------------------------------------------------------- FUNCTIONS
+
+function findModule(prop){
+	for(let module in require.cache){
+		if(typeof require.cache[module][prop] !== "undefined") return require.cache[module];
+	}
+	return undefined;
+}
 
 function _inject(){
 	// Switches and configs that can be toggled on directly
