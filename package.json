@@ -1,6 +1,6 @@
 {
   "name": "glasstron",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "The go-to solution to Electron composition effects",
   "main": "src/index.js",
   "scripts": {},

@@ -21,16 +21,12 @@ const execFile = util.promisify(require('child_process').execFile);
 
 module.exports = class Linux{
 
-	constructor(main){
-		this.main = main
-	}
-
-	update(values){
+	static update(win, values){
 		if(typeof values.requestBlur === "boolean"){
 			Linux._getXWindowManager().then(res => {
 				switch(res){
 					case 'KWin':
-						this._kwin_requestBlur(values.requestBlur);
+						this._kwin_requestBlur(win, values.requestBlur);
 						break;
 					default:
 						break;
@@ -48,9 +44,9 @@ module.exports = class Linux{
 				if(res.error){
 					return null;
 				}
-				Linux.prototype._xprop = res.stdout.trim();
+				this._xprop = res.stdout.trim();
 				
-				const shCommand = `${Linux.prototype._xprop} -id $(${Linux.prototype._xprop} -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"\{print $5\}') -notype -f _NET_WM_NAME 8t | grep "_NET_WM_NAME = " | cut --delimiter=' ' --fields=3 | cut --delimiter='"' --fields=2`;
+				const shCommand = `${this._xprop} -id $(${this._xprop} -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"\{print $5\}') -notype -f _NET_WM_NAME 8t | grep "_NET_WM_NAME = " | cut --delimiter=' ' --fields=3 | cut --delimiter='"' --fields=2`;
 				return execFile('sh', ['-c',shCommand]).then(res => {
 					if(res.error) return null;
 					return res.stdout.trim();
@@ -64,11 +60,11 @@ module.exports = class Linux{
 	 * This method handles blurring on KWin
 	 * Sorry, Wayland users (for now) :C
 	 */
-	_kwin_requestBlur(mode){
-		if(!Linux.prototype._xprop) return;
+	static _kwin_requestBlur(win, mode){
+		if(!this._xprop) return;
 		if(process.env.XDG_SESSION_TYPE != 'x11') return;
-		const xid = '0x' + this.main.win.getNativeWindowHandle().readUInt32LE().toString(16);
-		const shCommand = Linux.prototype._xprop + ' -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c ' + (mode ? '-set' : '-remove') + ' _KDE_NET_WM_BLUR_BEHIND_REGION ' + (mode ? '0' : '') + ' -id ' + xid;
+		const xid = '0x' + win.getNativeWindowHandle().readUInt32LE().toString(16);
+		const shCommand = this._xprop + ' -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c ' + (mode ? '-set' : '-remove') + ' _KDE_NET_WM_BLUR_BEHIND_REGION ' + (mode ? '0' : '') + ' -id ' + xid;
 		return exec(shCommand);
 	}
 }

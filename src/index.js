@@ -29,15 +29,15 @@ if(typeof __module !== "undefined"){
 			_inject();
 			_overrideEmit();
 		},
-		update: function(values){
-			return Main.staticToInstance().update(values);
+		update: function(win, values){
+			return Main.getInstance().update(win, values);
 		},
-		getPlatformClass: function(){
-			return Main.staticToInstance().getCurrentPlatformClass();
+		getPlatform: function(){
+			return Main.getInstance().getCurrentPlatform();
 		}
 	};
+	module.__glasstron = true;
 }
-module.__glasstron = true;
 
 // ------------------------------------------------------------- FUNCTIONS
 

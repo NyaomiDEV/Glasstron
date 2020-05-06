@@ -30,10 +30,26 @@ class BrowserWindow extends electron.BrowserWindow {
 		const _backgroundColor = options.backgroundColor;
 		options.backgroundColor = '#00000000';
 		super(options);
-		
-		const main = new Main(this);
-		main._bgColor = _backgroundColor;
+		this.setBackgroundColor(_backgroundColor);
 	}
+	
+	setBackgroundColor(color){
+		if(typeof color == "undefined")
+			color = "00000000";
+		// Color transform from ARGB to RGBA
+		color = [...color.replace('#','')];
+		if(color.length % 4 === 0)
+			for(let i=0;i<color.length/4;i++)
+				color.push(color.shift());
+		color = color.join("");
+		// CSS insertion
+		const callback = () => {
+			return this.webContents.insertCSS(`:root{ background-color: #${color} !important; }`).then(key => {this._cssKey = key;});
+		}
+		if(typeof this._bgCssKey !== "undefined") return this.webContents.removeInsertedCSS(this._bgCssKey).then(callback);
+		else return callback();
+	}
+
 }
 
 Object.assign(BrowserWindow, electron.BrowserWindow); // Retains the original functions
