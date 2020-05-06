@@ -13,9 +13,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-const electron = require('electron');
+const electron = require("electron");
 
 module.exports = class Main{
 	constructor(){
@@ -26,7 +26,7 @@ module.exports = class Main{
 	}
 	
 	static getInstance(){
-		if(typeof Main.prototype._instance === 'undefined')
+		if(typeof Main.prototype._instance === "undefined")
 			new Main();
 		return Main.prototype._instance;
 	}

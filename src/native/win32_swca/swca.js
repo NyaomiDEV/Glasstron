@@ -13,21 +13,22 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+"use strict";
 
-const os = require('os');
-const path = require('path');
-const execFile = require('util').promisify(require('child_process').execFile);
-const Utils = require('../../utils.js');
+const os = require("os");
+const path = require("path");
+const execFile = require("util").promisify(require("child_process").execFile);
+const Utils = require("../../utils.js");
 
 module.exports = class SWCA{
 
 	constructor(win){
 		this.win = win;
 		this.hwnd = this.win.getNativeWindowHandle()["readInt32" + os.endianness]();
-		if(!Utils.isInPath('swca.exe'))
-			Utils.copyToPath(path.join(__dirname, 'swca.exe'), 'swca.exe');
+		if(!Utils.isInPath("swca.exe"))
+			Utils.copyToPath(path.join(__dirname, "swca.exe"), "swca.exe");
 
-		this.swca = Utils.getSavedPath('swca.exe');
+		this.swca = Utils.getSavedPath("swca.exe");
 		this._p = Promise.resolve();
 	}
 	
@@ -64,13 +65,13 @@ module.exports = class SWCA{
 		const lessCostlyBlurWin = this.constructor.debounce(() => {this.setBlurBehind()}, 50, true);
 		const moreCostlyBlurWin = this.constructor.debounce(() => {this.setAcrylic()}, 50);
 		const callback = () => {
-			if(this.wattr[0] === 4 && typeof this.perfmode === 'boolean' && this.perfmode){
+			if(this.wattr[0] === 4 && typeof this.perfmode === "boolean" && this.perfmode){
 				lessCostlyBlurWin();
 				moreCostlyBlurWin();
 			}
 		};
-		this.win.on('move', callback);
-		this.win.on('resize', callback);
+		this.win.on("move", callback);
+		this.win.on("resize", callback);
 	}
 
 	/**

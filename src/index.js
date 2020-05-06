@@ -13,12 +13,12 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-const electron = require('electron');
-const Module = require('module');
-const BrowserWindow = require('./browser_window.js');
-const Main = require('./main.js');
+const electron = require("electron");
+const Module = require("module");
+const BrowserWindow = require("./browser_window.js");
+const Main = require("./main.js");
 
 const __module = findModule("__glasstron");
 if(typeof __module !== "undefined"){
@@ -50,8 +50,8 @@ function findModule(prop){
 
 function _inject(){
 	// Switches and configs that can be toggled on directly
-	if(!electron.app.commandLine.hasSwitch('enable-transparent-visuals'))
-		electron.app.commandLine.appendSwitch('enable-transparent-visuals'); // ALWAYS enable transparent visuals
+	if(!electron.app.commandLine.hasSwitch("enable-transparent-visuals"))
+		electron.app.commandLine.appendSwitch("enable-transparent-visuals"); // ALWAYS enable transparent visuals
 
 	// Replacing of BrowserWindow with ours
 	Object.assign(BrowserWindow, electron.BrowserWindow); // Assign the new chrome-specific functions

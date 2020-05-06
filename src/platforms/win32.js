@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
 const SWCA = require("../native/win32_swca/swca.js");
 
@@ -34,16 +34,16 @@ module.exports = class Win32{
 	
 	static _apply(win, type){
 		switch(type){
-			case 'acrylic':
+			case "acrylic":
 				win._swca.setAcrylic();
 				break;
-			case 'blurbehind':
+			case "blurbehind":
 				win._swca.setBlurBehind();
 				break;
-			case 'transparent':
+			case "transparent":
 				win._swca.setTransparentGradient();
 				break;
-			case 'none':
+			case "none":
 			default:
 				win._swca.disable();
 				break;

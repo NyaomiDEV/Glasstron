@@ -13,22 +13,22 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-const electron = require('electron');
-const path = require('path');
-const Main = require('./main.js');
-const Utils = require('./utils.js');
+const electron = require("electron");
+const path = require("path");
+const Main = require("./main.js");
+const Utils = require("./utils.js");
 
 /*
  * The BrowserWindow override class
  */
 class BrowserWindow extends electron.BrowserWindow {
 	constructor(options) {
-		if(process.platform !== 'win32') options.transparent = true;
+		if(process.platform !== "win32") options.transparent = true;
 		
 		const _backgroundColor = options.backgroundColor;
-		options.backgroundColor = '#00000000';
+		options.backgroundColor = "#00000000";
 		super(options);
 		this.setBackgroundColor(_backgroundColor);
 	}
@@ -37,7 +37,7 @@ class BrowserWindow extends electron.BrowserWindow {
 		if(typeof color == "undefined")
 			color = "00000000";
 		// Color transform from ARGB to RGBA
-		color = [...color.replace('#','')];
+		color = [...color.replace("#","")];
 		if(color.length % 4 === 0)
 			for(let i=0;i<color.length/4;i++)
 				color.push(color.shift());
