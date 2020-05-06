@@ -24,7 +24,7 @@ electron.app.on('ready', () => {
 		height: 600,
 		// ...
 	});
-	glasstron.update({
+	glasstron.update(win, {
 		windows: {blurType: 'acrylic', performanceMode: true},
 		//                   ^~~~~~~
 		// Windows 10 1803+; for older versions you might want to use 'blurbehind'
