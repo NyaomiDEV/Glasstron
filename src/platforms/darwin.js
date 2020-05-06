@@ -16,14 +16,9 @@
 'use strict';
 
 module.exports = class Darwin{
-	static init(win){
-		win.__setVibrancy = win.setVibrancy;
-		win.setVibrancy = (value) => {this.update(win, {vibrancy: value})};
-	}
-	
 	static update(win, values){
 		if(typeof values.vibrancy !== "undefined")
-			return win.__setVibrancy(values.vibrancy);
+			return win.setVibrancy(values.vibrancy);
 		return false;
 	}
 }
