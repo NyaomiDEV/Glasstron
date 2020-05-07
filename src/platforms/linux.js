@@ -15,9 +15,7 @@
 */
 "use strict";
 
-const util = require("util");
-const exec = util.promisify(require("child_process").exec);
-const execFile = util.promisify(require("child_process").execFile);
+const x11 = require("../native/linux_x11/linux_x11.js");
 
 module.exports = class Linux{
 
@@ -40,18 +38,7 @@ module.exports = class Linux{
 	 */
 	static _getXWindowManager(){
 		if(process.env.XDG_SESSION_TYPE == "x11"){
-			return execFile("which", ["xprop"]).then(res => {
-				if(res.error){
-					return null;
-				}
-				this._xprop = res.stdout.trim();
-				
-				const shCommand = `${this._xprop} -id $(${this._xprop} -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"\{print $5\}') -notype -f _NET_WM_NAME 8t | grep "_NET_WM_NAME = " | cut --delimiter=' ' --fields=3 | cut --delimiter='"' --fields=2`;
-				return execFile("sh", ["-c",shCommand]).then(res => {
-					if(res.error) return null;
-					return res.stdout.trim();
-				});
-			});
+			return x11.getXWindowManager();
 		}
 		return Promise.resolve(null);
 	}
@@ -61,10 +48,19 @@ module.exports = class Linux{
 	 * Sorry, Wayland users (for now) :C
 	 */
 	static _kwin_requestBlur(win, mode){
-		if(!this._xprop) return;
-		if(process.env.XDG_SESSION_TYPE != "x11") return;
-		const xid = "0x" + win.getNativeWindowHandle().readUInt32LE().toString(16);
-		const shCommand = this._xprop + " -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c " + (mode ? "-set" : "-remove") + " _KDE_NET_WM_BLUR_BEHIND_REGION " + (mode ? "0" : "") + " -id " + xid;
-		return exec(shCommand);
+		if(mode){
+			return x11.changeXProperty(
+				win.getNativeWindowHandle().readUInt32LE(),
+				"_KDE_NET_WM_BLUR_BEHIND_REGION",
+				"CARDINAL",
+				32,
+				[0]
+			);
+		}
+		return x11.deleteXProperty(
+			win.getNativeWindowHandle().readUInt32LE(),
+			"_KDE_NET_WM_BLUR_BEHIND_REGION"
+		);
 	}
+
 }

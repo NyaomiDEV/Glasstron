@@ -1,6 +1,6 @@
 {
   "name": "glasstron",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "The go-to solution to Electron composition effects",
   "main": "src/index.js",
   "scripts": {},
@@ -24,5 +24,8 @@
   "homepage": "https://github.com/AryToNeX/Glasstron#readme",
   "devDependencies": {
     "electron": "^8.2.5"
+  },
+  "dependencies": {
+    "x11": "^2.3.0"
   }
 }
