@@ -26,13 +26,19 @@ const Utils = require("./utils.js");
 class BrowserWindow extends electron.BrowserWindow {
 	constructor(options) {
 		if(process.platform !== "win32") options.transparent = true;
-		
+
 		const _backgroundColor = options.backgroundColor;
 		options.backgroundColor = "#00000000";
-		super(options);
-		this.setBackgroundColor(_backgroundColor);
+		// We do not call super to get an actual BrowserWindow from electron and not mess with native casts (broke GTK modals)
+		const window = new electron.BrowserWindow(options);
+		const boundFunction = BrowserWindow.setBackgroundColor.bind(window);
+		Object.defineProperty(window, "setBackgroundColor", {
+			get: () => boundFunction
+		});
+		window.setBackgroundColor(_backgroundColor);
+		return window;
 	}
-	
+
 	setBackgroundColor(color){
 		if(typeof color == "undefined")
 			color = "00000000";
@@ -49,9 +55,7 @@ class BrowserWindow extends electron.BrowserWindow {
 		if(typeof this._bgCssKey !== "undefined") return this.webContents.removeInsertedCSS(this._bgCssKey).then(callback);
 		else return callback();
 	}
-
 }
 
 Object.assign(BrowserWindow, electron.BrowserWindow); // Retains the original functions
-
 module.exports = BrowserWindow;
