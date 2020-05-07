@@ -39,7 +39,7 @@ class BrowserWindow extends electron.BrowserWindow {
 		return window;
 	}
 
-	setBackgroundColor(color){
+	static setBackgroundColor(color){
 		if(typeof color == "undefined")
 			color = "00000000";
 		// Color transform from ARGB to RGBA
