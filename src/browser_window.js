@@ -31,10 +31,7 @@ class BrowserWindow extends electron.BrowserWindow {
 		options.backgroundColor = "#00000000";
 		// We do not call super to get an actual BrowserWindow from electron and not mess with native casts (broke GTK modals)
 		const window = new electron.BrowserWindow(options);
-		const boundFunction = BrowserWindow.setBackgroundColor.bind(window);
-		Object.defineProperty(window, "setBackgroundColor", {
-			get: () => boundFunction
-		});
+		BrowserWindow._bindAndReplace(window, BrowserWindow.setBackgroundColor);
 		window.setBackgroundColor(_backgroundColor);
 		return window;
 	}
@@ -50,12 +47,18 @@ class BrowserWindow extends electron.BrowserWindow {
 		color = color.join("");
 		// CSS insertion
 		const callback = () => {
-			return this.webContents.insertCSS(`:root{ background-color: #${color} !important; }`).then(key => {this._cssKey = key;});
+			return this.webContents.insertCSS(`:root{ background-color: #${color} !important; }`).then(key => {this._bgCssKey = key;});
 		}
 		if(typeof this._bgCssKey !== "undefined") return this.webContents.removeInsertedCSS(this._bgCssKey).then(callback);
 		else return callback();
 	}
+	
+	static _bindAndReplace(object, method){
+		const boundFunction = method.bind(object);
+		Object.defineProperty(object, method.name, {
+			get: () => boundFunction
+		});
+	}
 }
 
-Object.assign(BrowserWindow, electron.BrowserWindow); // Retains the original functions
 module.exports = BrowserWindow;

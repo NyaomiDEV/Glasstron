@@ -53,8 +53,7 @@ function _inject(){
 	if(!electron.app.commandLine.hasSwitch("enable-transparent-visuals"))
 		electron.app.commandLine.appendSwitch("enable-transparent-visuals"); // ALWAYS enable transparent visuals
 
-	// Replacing of BrowserWindow with ours
-	Object.assign(BrowserWindow, electron.BrowserWindow); // Assign the new chrome-specific functions
+	// Replace BrowserWindow with our wrapper class
 	const electronPath = require.resolve("electron");
 	const newElectron = Object.assign({}, electron, {BrowserWindow}); // Create new electron object
 
