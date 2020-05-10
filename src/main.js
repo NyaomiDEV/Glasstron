@@ -55,7 +55,7 @@ module.exports = class Main{
 			this._platform = require(`./platforms/${process.platform}.js`);
 		}catch(e){
 			console.log("It seems your platform is not supported by Glasstron!");
-			this._platform = new (class Dummy{static update(win, values){}});
+			this._platform = class Dummy{static update(win, values){}};
 		}
 	}
 }

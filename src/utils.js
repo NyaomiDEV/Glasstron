@@ -29,15 +29,15 @@ class Utils{
 
 	static copyToPath(innerFile, outerFilename = null, flags = fs.constants.COPYFILE_EXCL){
 		if(!fs.existsSync(savepath)) fs.mkdirSync(savepath);
-		return fs.copyFileSync(innerFile, Utils.getSavedPath(outerFilename || path.basename(innerFile)), flags);
+		return fs.copyFileSync(innerFile, path.resolve(Utils.getSavePath(), (outerFilename || path.basename(innerFile))), flags);
 	}
 
 	static removeFromPath(filename){
-		return fs.unlinkSync(Utils.getSavedPath(filename));
+		return fs.unlinkSync(path.resolve(Utils.getSavePath(), filename));
 	}
 
 	static isInPath(filename){
-		return fs.existsSync(Utils.getSavedPath(filename));
+		return fs.existsSync(path.resolve(Utils.getSavePath(), filename));
 	}
 
 }

@@ -26,10 +26,6 @@ module.exports = class Win32{
 		if(typeof values.blurType !== "undefined"){
 			this._apply(win, values.blurType);
 		}
-		
-		if(typeof values.performanceMode === "boolean"){
-			win._swca.perfmode = values.performanceMode;
-		}
 	}
 	
 	static _apply(win, type){

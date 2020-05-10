@@ -26,15 +26,15 @@ module.exports = class SWCA{
 		this.win = win;
 		this.hwnd = this.win.getNativeWindowHandle()["readInt32" + os.endianness]();
 		if(!Utils.isInPath("swca.exe"))
-			Utils.copyToPath(path.join(__dirname, "swca.exe"), "swca.exe");
+			Utils.copyToPath(path.resolve(__dirname, "swca.exe"), "swca.exe");
 
-		this.swca = Utils.getSavedPath("swca.exe");
+		this.swca = path.resolve(Utils.getSavePath(), "swca.exe");
 		this._p = Promise.resolve();
 	}
 	
 	setWindowCompositionAttribute(mode, tint){
 		this.wattr = [mode, tint];
-		return this._p = this._p.then(() => return execFile(this.swca, [this.hwnd, mode, tint]));
+		return this._p = this._p.then(() => {return execFile(this.swca, [this.hwnd, mode, tint])});
 	}
 	
 	getWindowCompositionAttribute(){
@@ -58,37 +58,12 @@ module.exports = class SWCA{
 	}
 
 	setAcrylic(tint = 0x00000001){
+		if(!this.constructor.isWindows10()) return this.setBlurBehind(tint);
 		return this.setWindowCompositionAttribute(4, tint);
 	}
 
-	_applyPerformance(){
-		const lessCostlyBlurWin = this.constructor.debounce(() => {this.setBlurBehind()}, 50, true);
-		const moreCostlyBlurWin = this.constructor.debounce(() => {this.setAcrylic()}, 50);
-		const callback = () => {
-			if(this.wattr[0] === 4 && typeof this.perfmode === "boolean" && this.perfmode){
-				lessCostlyBlurWin();
-				moreCostlyBlurWin();
-			}
-		};
-		this.win.on("move", callback);
-		this.win.on("resize", callback);
-	}
-
-	/**
-	 * Debounce function
-	 * Might come in handy, given all those bouncy events!
-	 */
-	static debounce(func, wait, immediate){
-		var timeout;
-		return function() {
-			var context = this, args = arguments;
-			var callNow = immediate && !timeout;
-			clearTimeout(timeout);
-			timeout = setTimeout(function() {
-				timeout = null;
-				if (!immediate) func.apply(context, args);
-			}, wait);
-			if (callNow) func.apply(context, args);
-		};
+	static isWindows10(){
+		if(process.platform !== 'win32') return false;
+		return os.release().split('.')[0] === '10';
 	}
 }

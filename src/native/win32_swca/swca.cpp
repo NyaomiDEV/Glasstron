@@ -40,33 +40,14 @@ enum ACCENTTYPES{
 };
 */
 
-// https://stackoverflow.com/a/52122386
-double getSysOpType(){
-	int ret = 0.0;
-	NTSTATUS(WINAPI *RtlGetVersion)(LPOSVERSIONINFOEXW);
-	OSVERSIONINFOEXW osInfo;
-
-	*(FARPROC*)&RtlGetVersion = GetProcAddress(GetModuleHandleA("ntdll"), "RtlGetVersion");
-
-	if(NULL != RtlGetVersion){
-		osInfo.dwOSVersionInfoSize = sizeof(osInfo);
-		RtlGetVersion(&osInfo);
-		ret = osInfo.dwMajorVersion;
-	}
-	return ret;
-}
+const HINSTANCE hModule = LoadLibrary(TEXT("user32.dll"));
+typedef BOOL(WINAPI* pSetWindowCompositionAttribute) (HWND, WINCOMATTRPDATA*);
 
 int main(int argc, char** argv) {
 	if(argc < 4) return 2;
-	
-	if(getSysOpType() < 10.0){
-		if(strcmp(argv[2], (char*)"4") == 0) argv[2] = (char*)"3";
-	}
 
 	HWND hwnd = (HWND) std::stoull(argv[1]);
 
-	const HINSTANCE hModule = LoadLibrary(TEXT("user32.dll"));
-	typedef BOOL(WINAPI* pSetWindowCompositionAttribute) (HWND, WINCOMATTRPDATA*);
 	const pSetWindowCompositionAttribute SetWindowCompositionAttribute = (pSetWindowCompositionAttribute) GetProcAddress(hModule, "SetWindowCompositionAttribute");
 	if (SetWindowCompositionAttribute){
 
@@ -74,11 +55,12 @@ int main(int argc, char** argv) {
 		policy.nAccentState = std::atoi(argv[2]);
 		policy.nFlags = 2;
 		policy.nColor = std::atoi(argv[3]);
+		policy.nAnimationId = 0;
 
 		WINCOMATTRPDATA data;
 		data.nAttribute = 19; // WCA_ACCENT_POLICY
-		data.ulDataSize = sizeof(policy);
 		data.pData = &policy;
+		data.ulDataSize = sizeof(policy);
 
 		SetWindowCompositionAttribute(hwnd, &data);
 		FreeLibrary(hModule);
