@@ -10,7 +10,7 @@ A simple and reliable API to achieve blur and transparency across platforms (Win
 
 ## Quickstart
 ```bash
-$ npm install AryToNeX/Glasstron
+$ npm install glasstron
 ```
 ```js
 const glasstron = require('glasstron');
