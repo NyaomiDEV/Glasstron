@@ -39,9 +39,11 @@ module.exports = class Main{
 			"freebsd": "freebsd",
 			"sunos": "sunos"
 		};
-		if(values[mappings[process.platform]])
+		if(values[mappings[process.platform]]){
 			this._platform.update(win, values[mappings[process.platform]]);
-		return true;
+			return true;
+		}
+		return false;
 	}
 	
 	getCurrentPlatform(){
