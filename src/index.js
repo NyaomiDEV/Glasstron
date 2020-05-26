@@ -50,7 +50,7 @@ function findModule(prop){
 
 function _inject(){
 	// Switches and configs that can be toggled on directly
-	if(!electron.app.commandLine.hasSwitch("enable-transparent-visuals"))
+	if(process.platform === "linux" && !electron.app.commandLine.hasSwitch("enable-transparent-visuals"))
 		electron.app.commandLine.appendSwitch("enable-transparent-visuals"); // ALWAYS enable transparent visuals
 
 	// Replace BrowserWindow with our wrapper class
