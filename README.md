@@ -62,6 +62,7 @@ Or perhaps you want to send me a hug and a coffee? You can do so [here](https://
 - [Glasscord](https://github.com/AryToNeX/Glasscord)
 - [Android Messages](https://github.com/katacarbix/android-messages) by katacarbix
 - [Terminus](https://github.com/Eugeny/terminus) by Eugeny
+- [Dot Browser](https://github.com/dothq/browser) by Dot HQ
 - Want yours featured? Issue a PR!
 
 ## License
