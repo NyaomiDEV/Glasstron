@@ -16,9 +16,6 @@
 "use strict";
 
 const electron = require("electron");
-const path = require("path");
-const Main = require("./main.js");
-const Utils = require("./utils.js");
 
 /*
  * The BrowserWindow override class

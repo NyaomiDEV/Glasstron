@@ -16,7 +16,6 @@
 "use strict";
 
 const electron = require("electron");
-const Module = require("module");
 const BrowserWindow = require("./browser_window.js");
 const Main = require("./main.js");
 

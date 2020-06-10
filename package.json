@@ -8,7 +8,8 @@
   "main": "src/index.js",
   "scripts": {
     "build": "node-gyp rebuild",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "test": "electron ./test"
   },
   "repository": {
     "type": "git",

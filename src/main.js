@@ -15,8 +15,6 @@
 */
 "use strict";
 
-const electron = require("electron");
-
 module.exports = class Main{
 	constructor(){
 		// Let's read our platform
