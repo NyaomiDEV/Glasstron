@@ -6,7 +6,10 @@
     "url": "https://patreon.com/arytonex"
   },
   "main": "src/index.js",
-  "scripts": {},
+  "scripts": {
+    "build": "node-gyp rebuild",
+    "prepare": "npm run build"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AryToNeX/Glasstron.git"
@@ -26,7 +29,8 @@
   },
   "homepage": "https://github.com/AryToNeX/Glasstron#readme",
   "devDependencies": {
-    "electron": "^8.2.5"
+    "electron": "^8.2.5",
+    "node-addon-api": "^3.0.0"
   },
   "dependencies": {
     "x11": "^2.3.0"

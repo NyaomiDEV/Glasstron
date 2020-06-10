@@ -20,21 +20,23 @@ const path = require("path");
 const execFile = require("util").promisify(require("child_process").execFile);
 const Utils = require("../../utils.js");
 
+let __swca;
+try{
+	__swca = require("../../../build/Release/addon.node");
+}catch(_){
+	__swca = require("./swca_executable.js");
+}
+
 module.exports = class SWCA{
 
 	constructor(win){
 		this.win = win;
 		this.hwnd = this.win.getNativeWindowHandle()["readInt32" + os.endianness]();
-		if(!Utils.isInPath("swca.exe"))
-			Utils.copyToPath(path.resolve(__dirname, "swca.exe"), "swca.exe");
-
-		this.swca = path.resolve(Utils.getSavePath(), "swca.exe");
-		this._p = Promise.resolve();
 	}
 	
 	setWindowCompositionAttribute(mode, tint){
 		this.wattr = [mode, tint];
-		return this._p = this._p.then(() => {return execFile(this.swca, [this.hwnd, mode, tint])});
+		return __swca.setWindowCompositionAttribute(this.hwnd, mode, tint);
 	}
 	
 	getWindowCompositionAttribute(){
