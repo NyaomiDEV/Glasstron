@@ -12,7 +12,7 @@ electron.app.on('ready', () => {
 
   win.webContents.loadURL('about:blank');
   
-  win.webContents.insertCSS('html { background-color: rgba(255, 255, 255, 0.5); }');
+  win.webContents.insertCSS('html { background-color: transparent; }');
 
 	glasstron.update(win, {
 		windows: {blurType: 'acrylic'},
