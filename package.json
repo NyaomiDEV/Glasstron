@@ -7,7 +7,8 @@
   },
   "main": "src/index.js",
   "scripts": {
-    "build": "node-gyp rebuild",
+    "build-exe": "i686-w64-mingw32-g++ -static -static-libgcc -static-libstdc++ -o build/swca.exe src/native/win32_swca/lib/exec.cpp",
+    "build": "node-gyp rebuild && npm run build-exe",
     "prepare": "npm run build",
     "test": "electron ./test"
   },
