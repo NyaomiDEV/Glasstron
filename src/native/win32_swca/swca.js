@@ -19,7 +19,7 @@ const os = require("os");
 
 let __swca;
 try{
-	__swca = require("../../../build/Release/addon.node");
+	__swca = require("../../../native/swca.node");
 }catch(_){
 	__swca = require("./swca_executable.js");
 }

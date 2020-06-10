@@ -24,7 +24,7 @@ module.exports = class SWCAExec {
 	constructor(){
 		this._p = Promise.resolve();
 		if(!Utils.isInPath("swca.exe"))
-			Utils.copyToPath(path.resolve(__dirname, "..", "..", "..", "build", "swca.exe"), "swca.exe");
+			Utils.copyToPath(path.resolve(__dirname, "..", "..", "..", "native", "swca.exe"), "swca.exe");
 
 		this.swca = path.resolve(Utils.getSavePath(), "swca.exe");
 	}
