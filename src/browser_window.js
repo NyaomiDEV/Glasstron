@@ -38,19 +38,19 @@ class BrowserWindow extends electron.BrowserWindow {
 		if(typeof color == "undefined")
 			color = "00000000";
 		// Color transform from ARGB to RGBA
-		color = [...color.replace("#","")];
+		color = [...color.replace("#", "")];
 		if(color.length % 4 === 0)
-			for(let i=0;i<color.length/4;i++)
+			for (let i = 0; i < color.length / 4; i++)
 				color.push(color.shift());
 		color = color.join("");
 		// CSS insertion
 		const callback = () => {
-			return this.webContents.insertCSS(`:root{ background-color: #${color} !important; }`).then(key => {this._bgCssKey = key;});
+			return this.webContents.insertCSS(`:root{ background-color: #${color} !important; }`).then(key => { this._bgCssKey = key; });
 		}
 		if(typeof this._bgCssKey !== "undefined") return this.webContents.removeInsertedCSS(this._bgCssKey).then(callback);
 		else return callback();
 	}
-	
+
 	static _bindAndReplace(object, method){
 		const boundFunction = method.bind(object);
 		Object.defineProperty(object, method.name, {

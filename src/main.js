@@ -15,20 +15,20 @@
 */
 "use strict";
 
-module.exports = class Main{
+module.exports = class Main {
 	constructor(){
 		// Let's read our platform
 		this._loadPlatform();
-		
+
 		Main.prototype._instance = this;
 	}
-	
+
 	static getInstance(){
 		if(typeof Main.prototype._instance === "undefined")
 			new Main();
 		return Main.prototype._instance;
 	}
-	
+
 	update(win, values){
 		const mappings = { // Glasstron platform types <--- process.platform types
 			"win32": "windows",
@@ -43,19 +43,19 @@ module.exports = class Main{
 		}
 		return false;
 	}
-	
+
 	getCurrentPlatform(){
 		return this._platform;
 	}
-	
+
 	// Methods for private use -- don't call them from outside, please
-	
+
 	_loadPlatform(){
-		try{
+		try {
 			this._platform = require(`./platforms/${process.platform}.js`);
 		}catch(e){
 			console.log("It seems your platform is not supported by Glasstron!");
-			this._platform = class Dummy{static update(win, values){}};
+			this._platform = class Dummy { static update(win, values){} };
 		}
 	}
 }

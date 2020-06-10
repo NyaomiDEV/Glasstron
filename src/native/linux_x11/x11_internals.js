@@ -17,7 +17,7 @@
 
 const x11 = require("x11");
 
-module.exports = class X11Internals{
+module.exports = class X11Internals {
 	
 	static _internal_getPropertyData(id, prop, callback){
 		return x11.createClient(function(err, display) {

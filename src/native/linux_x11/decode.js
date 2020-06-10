@@ -15,7 +15,7 @@
 */
 "use strict";
 
-module.exports = class X11Decode{
+module.exports = class X11Decode {
 	
 	static decodeFromTypeName(typeName, buffer){
 		switch(typeName){

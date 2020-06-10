@@ -19,7 +19,7 @@ const x11 = require("./x11_promisify.js");
 const decoder = require("./decode.js");
 const encoder = require("./encode.js");
 
-module.exports = class LinuxX11{
+module.exports = class LinuxX11 {
 
 	static getXWindowManager(){
 		return x11.getPropertyData(undefined, "_NET_SUPPORTING_WM_CHECK").then((data) => {

@@ -5,7 +5,7 @@
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+           http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,40 +15,28 @@
 */
 #include "swca.h"
 
-/*
-enum ACCENTTYPES{
-        ACCENT_DISABLE = 0,
-        ACCENT_ENABLE_GRADIENT = 1,
-        ACCENT_ENABLE_TRANSPARENTGRADIENT = 2,
-        ACCENT_ENABLE_BLURBEHIND = 3,
-        ACCENT_ENABLE_ACRYLICBLURBEHIND = 4,
-        ACCENT_INVALID_STATE = 5
-};
-*/
-
 int swca(HWND hwnd, int accentState, int color) {
-    const HINSTANCE hModule = LoadLibrary(TEXT("user32.dll"));
-    const pSetWindowCompositionAttribute SetWindowCompositionAttribute =
-        (pSetWindowCompositionAttribute)GetProcAddress(
-            hModule, "SetWindowCompositionAttribute");
+	const HINSTANCE hModule = LoadLibrary(TEXT("user32.dll"));
+	const pSetWindowCompositionAttribute SetWindowCompositionAttribute =
+		(pSetWindowCompositionAttribute) GetProcAddress(hModule, "SetWindowCompositionAttribute");
 
-    if (SetWindowCompositionAttribute) {
-        ACCENTPOLICY policy;
-        policy.nAccentState = accentState;
-        policy.nFlags = 2;
-        policy.nColor = color;
-        policy.nAnimationId = 0;
+	if (SetWindowCompositionAttribute) {
+		ACCENTPOLICY policy;
+		policy.nAccentState = accentState;
+		policy.nFlags = 2;
+		policy.nColor = color;
+		policy.nAnimationId = 0;
 
-        WINCOMATTRPDATA data;
-        data.nAttribute = 19;  // WCA_ACCENT_POLICY
-        data.pData = &policy;
-        data.ulDataSize = sizeof(policy);
+		WINCOMATTRPDATA data;
+		data.nAttribute = 19; // WCA_ACCENT_POLICY
+		data.pData = &policy;
+		data.ulDataSize = sizeof(policy);
 
-        SetWindowCompositionAttribute(hwnd, &data);
-        FreeLibrary(hModule);
+		SetWindowCompositionAttribute(hwnd, &data);
+		FreeLibrary(hModule);
 
-        return 0;
-    }
+		return 0;
+	}
 
-    return 1;
+	return 1;
 }

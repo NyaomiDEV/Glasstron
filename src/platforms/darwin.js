@@ -15,7 +15,7 @@
 */
 "use strict";
 
-module.exports = class Darwin{
+module.exports = class Darwin {
 	static update(win, values){
 		if(typeof values.vibrancy !== "undefined")
 			return win.setVibrancy(values.vibrancy);
