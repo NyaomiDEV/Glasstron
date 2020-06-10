@@ -16,9 +16,6 @@
 "use strict";
 
 const os = require("os");
-const path = require("path");
-const execFile = require("util").promisify(require("child_process").execFile);
-const Utils = require("../../utils.js");
 
 let __swca;
 try{
