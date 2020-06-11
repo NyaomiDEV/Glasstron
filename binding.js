@@ -19,16 +19,23 @@ const execFile = require("util").promisify(require("child_process").execFile);
 const fs = require("fs").promises;
 const _path = require("path");
 
-console.log("Trying to build Glasstron's native SWCA addon");
-execFile("npx", ["node-gyp", "rebuild"], {cwd: __dirname}).then(async (stdout, stderr) => {
-	console.log("Node-gyp finished. Cleaning up...");
+async function bindings(){
+	if(await fs.stat(_path.resolve(__dirname, "build", "Release", "swca.node"))){
+		console.log("Glasstron's native SWCA addon was built. Cleaning up...");
+	}else{
+		try{
+			await execFile("npx", ["node-gyp", "rebuild"], {cwd: __dirname});
+		}catch(err){
+			console.log("Error while compiling the native addon.");
+			throw err;
+		}
+			console.log("Node-gyp finished. Cleaning up...");
+	}
+
 	await fs.rename(_path.resolve(__dirname, "build", "Release", "swca.node"), _path.resolve(__dirname, "native", "swca.node"));
 	await removeRecursive(_path.resolve(__dirname, "build"));
 	console.log("Done!");
-}).catch((err) => {
-	console.log("Error while compiling the native addon.");
-	throw err;
-});
+}
 
 async function removeRecursive(path){
 	const stat = await fs.stat(path);
@@ -41,3 +48,5 @@ async function removeRecursive(path){
 	}else
 		await fs.unlink(path);
 }
+
+bindings();

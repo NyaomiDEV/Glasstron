@@ -9,7 +9,7 @@
   "scripts": {
     "build-exe": "i686-w64-mingw32-g++ -static -static-libgcc -static-libstdc++ -o native/swca.exe src/native/win32_swca/lib/exec.cpp",
     "build": "node ./binding.js",
-    "prepare": "npm run build",
+    "postinstall": "npm run build",
     "test": "electron ./test"
   },
   "repository": {
