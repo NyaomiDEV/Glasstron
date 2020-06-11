@@ -8,7 +8,7 @@
   "main": "src/index.js",
   "scripts": {
     "build-exe": "i686-w64-mingw32-g++ -static -static-libgcc -static-libstdc++ -o native/swca.exe src/native/win32_swca/lib/exec.cpp",
-    "build": "node-gyp rebuild; mv build/Release/swca.node native/swca.node; rm -fr build",
+    "build": "node ./binding.js",
     "prepare": "npm run build",
     "test": "electron ./test"
   },
