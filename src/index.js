@@ -27,7 +27,8 @@ if(typeof __module !== "undefined"){
 	module.exports = {
 		init: function(){
 			_inject();
-			_overrideEmit();
+			if(process.platform === "linux")
+				_overrideEmit();
 		},
 		update: function(win, values){
 			return Main.getInstance().update(win, values);
