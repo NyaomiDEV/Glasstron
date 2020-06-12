@@ -40,7 +40,7 @@ async function bindings(){
 async function removeRecursive(path){
 	const stat = await fs.stat(path);
 	if(stat.isDirectory()){
-	const sub = await fs.readdir(path);
+		const sub = await fs.readdir(path);
 		for(let subpath of sub){
 			await removeRecursive(_path.join(path, subpath));
 		}
