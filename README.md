@@ -1,4 +1,4 @@
-﻿# Glasstron
+# Glasstron
 
 A simple and reliable API to achieve blur and transparency across platforms (Windows/Linux/MacOS), so you don't have to panic with Electron bugs and messy code! Plus, it's really simple!
 
@@ -61,6 +61,8 @@ Or perhaps you want to send me a hug and a coffee? You can do so [here](https://
 ## Awesome applications using Glasstron
 - [Glasscord](https://github.com/AryToNeX/Glasscord)
 - [Android Messages](https://github.com/katacarbix/android-messages) by katacarbix
+- [Terminus](https://github.com/Eugeny/terminus) by Eugeny
+- [Dot Browser](https://github.com/dothq/browser) by Dot HQ
 - Want yours featured? Issue a PR!
 
 ## License
