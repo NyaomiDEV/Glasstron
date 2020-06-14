@@ -35,6 +35,9 @@ electron.app.on('ready', () => {
 
 // ...
 ```
+
+**NOTICE for projects using Webpack and similar:** Glasstron uses `__dirname` internally, so you have to define it as an external module, or else it won't work on Windows.
+
 ## Why Glasstron?
 
 ### The problem
@@ -48,8 +51,6 @@ Glasstron takes care of those problems and it also aims to support composition e
 
 ## Design and features
 Glasstron replaces Electron's `BrowserWindow` export with a modified version that's capable to deal with the common problems discussed earlier on its own. This means that it's simple to adopt and it doesn't break existing code as every call to broken methods is wrapped so nothing bad happens.
-
-In order to achieve blurriness on Windows, Glasstron calls an external tool (its own bundled `swca` application). This means that nothing will randomly break across Node versions.
 
 It also replaces the functionality of`win.setBackgroundColor()`: since there's no way to set a background color without breaking vibrancy materials on macOS, it will set the background color as injected CSS on the `:root` CSS selector. It can be overridden by CSS stylesheets, so be careful! (this was intended -- check the other project [Glasscord](https://github.com/AryToNeX/Glasscord) to know why).
 
