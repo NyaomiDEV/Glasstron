@@ -16,14 +16,13 @@
 "use strict";
 
 const electron = require("electron");
-const Module = require("module");
 const BrowserWindow = require("./browser_window.js");
 const Main = require("./main.js");
 
 const __module = findModule("__glasstron");
-if(typeof __module !== "undefined"){
+if(typeof __module !== "undefined")
 	module.exports = __module.exports;
-}else{
+else{
 	module.exports = {
 		init: function(){
 			_inject();
@@ -56,7 +55,7 @@ function _inject(){
 
 	// Replace BrowserWindow with our wrapper class
 	const electronPath = require.resolve("electron");
-	const newElectron = Object.assign({}, electron, {BrowserWindow}); // Create new electron object
+	const newElectron = Object.assign({}, electron, { BrowserWindow }); // Create new electron object
 
 	delete require.cache[electronPath].exports; // Delete exports
 	require.cache[electronPath].exports = newElectron; // Assign the exports as the new electron
@@ -67,8 +66,8 @@ function _inject(){
 
 function _overrideEmit(){ // from Zack, blame Electron
 	const originalEmit = electron.app.emit;
-	electron.app.emit = function(event, ...args) {
-		if (event !== "ready") return Reflect.apply(originalEmit, this, arguments);
+	electron.app.emit = function(event, ...args){
+		if(event !== "ready") return Reflect.apply(originalEmit, this, arguments);
 		setTimeout(() => {
 			electron.app.emit = originalEmit;
 			electron.app.emit("ready", ...args);

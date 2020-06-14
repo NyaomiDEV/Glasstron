@@ -16,14 +16,14 @@
 #include <dwmapi.h>
 #include <iostream>
 
-struct ACCENTPOLICY{
+struct ACCENTPOLICY {
 	int nAccentState;
 	int nFlags;
 	int nColor;
 	int nAnimationId;
 };
 
-struct WINCOMATTRPDATA{
+struct WINCOMATTRPDATA {
 	int nAttribute;
 	PVOID pData;
 	ULONG ulDataSize;
@@ -40,32 +40,6 @@ enum ACCENTTYPES{
 };
 */
 
-const HINSTANCE hModule = LoadLibrary(TEXT("user32.dll"));
-typedef BOOL(WINAPI* pSetWindowCompositionAttribute) (HWND, WINCOMATTRPDATA*);
+typedef BOOL(WINAPI *pSetWindowCompositionAttribute)(HWND, WINCOMATTRPDATA *);
 
-int main(int argc, char** argv) {
-	if(argc < 4) return 2;
-
-	HWND hwnd = (HWND) std::stoull(argv[1]);
-
-	const pSetWindowCompositionAttribute SetWindowCompositionAttribute = (pSetWindowCompositionAttribute) GetProcAddress(hModule, "SetWindowCompositionAttribute");
-	if (SetWindowCompositionAttribute){
-
-		ACCENTPOLICY policy;
-		policy.nAccentState = std::atoi(argv[2]);
-		policy.nFlags = 2;
-		policy.nColor = std::atoi(argv[3]);
-		policy.nAnimationId = 0;
-
-		WINCOMATTRPDATA data;
-		data.nAttribute = 19; // WCA_ACCENT_POLICY
-		data.pData = &policy;
-		data.ulDataSize = sizeof(policy);
-
-		SetWindowCompositionAttribute(hwnd, &data);
-		FreeLibrary(hModule);
-		return 0;
-	}
-
-	return 1;
-}
+int swca(HWND hwnd, int accentState, int color);

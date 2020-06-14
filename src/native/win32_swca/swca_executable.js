@@ -15,10 +15,22 @@
 */
 "use strict";
 
-module.exports = class Darwin {
-	static update(win, values){
-		if(typeof values.vibrancy !== "undefined")
-			return win.setVibrancy(values.vibrancy);
-		return false;
+const path = require("path");
+const execFile = require("util").promisify(require("child_process").execFile);
+const Utils = require("../../utils.js");
+
+module.exports = class SWCAExec {
+
+	constructor(){
+		this._p = Promise.resolve();
+		if(!Utils.isInPath("swca.exe"))
+			Utils.copyToPath(path.resolve(__dirname, "..", "..", "..", "native", "swca.exe"), "swca.exe");
+
+		this.swca = path.resolve(Utils.getSavePath(), "swca.exe");
 	}
+
+	setWindowCompositionAttribute(hwnd, mode, tint){
+		return this._p = this._p.then(() => {return execFile(this.swca, [hwnd, mode, tint])});
+	}
+
 }

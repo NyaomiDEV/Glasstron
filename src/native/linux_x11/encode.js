@@ -15,7 +15,7 @@
 */
 "use strict";
 
-module.exports = class X11Encode{
+module.exports = class X11Encode {
 
 	static encodeFromTypeName(typeName, data, null_terminated = false){
 		switch(typeName){

@@ -17,7 +17,7 @@
 
 const x11 = require("../native/linux_x11/linux_x11.js");
 
-module.exports = class Linux{
+module.exports = class Linux {
 
 	static update(win, values){
 		if(typeof values.requestBlur === "boolean"){
@@ -32,23 +32,22 @@ module.exports = class Linux{
 			});
 		}
 	}
-	
+
 	/**
 	 * This method returns us the current X window manager used
 	 */
 	static _getXWindowManager(){
-		if(process.env.XDG_SESSION_TYPE == "x11"){
+		if(process.env.XDG_SESSION_TYPE == "x11")
 			return x11.getXWindowManager();
-		}
 		return Promise.resolve(null);
 	}
-	
+
 	/**
 	 * This method handles blurring on KWin
 	 * Sorry, Wayland users (for now) :C
 	 */
 	static _kwin_requestBlur(win, mode){
-		if(mode){
+		if(mode)
 			return x11.changeXProperty(
 				win.getNativeWindowHandle().readUInt32LE(),
 				"_KDE_NET_WM_BLUR_BEHIND_REGION",
@@ -56,7 +55,6 @@ module.exports = class Linux{
 				32,
 				[0]
 			);
-		}
 		return x11.deleteXProperty(
 			win.getNativeWindowHandle().readUInt32LE(),
 			"_KDE_NET_WM_BLUR_BEHIND_REGION"

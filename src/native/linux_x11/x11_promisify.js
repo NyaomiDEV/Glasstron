@@ -17,7 +17,7 @@
 
 const x11 = require("./x11_internals.js");
 
-module.exports = class X11Promisify{
+module.exports = class X11Promisify {
 
 	static async getPropertyData(id, prop){
 		let promise = await new Promise((resolve, reject) => {

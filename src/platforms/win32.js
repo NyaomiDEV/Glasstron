@@ -18,16 +18,15 @@
 const SWCA = require("../native/win32_swca/swca.js");
 
 module.exports = class Win32{
-	
+
 	static update(win, values){
 		if(typeof win._swca === "undefined")
 			win._swca = new SWCA(win);
-		
-		if(typeof values.blurType !== "undefined"){
+
+		if(typeof values.blurType !== "undefined")
 			this._apply(win, values.blurType);
-		}
 	}
-	
+
 	static _apply(win, type){
 		switch(type){
 			case "acrylic":

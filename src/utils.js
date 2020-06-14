@@ -21,7 +21,7 @@ const electron = require("electron");
 
 const savepath = path.join(electron.app.getPath("appData"), "glasstron");
 
-class Utils{
+class Utils {
 
 	static getSavePath(){
 		return savepath;

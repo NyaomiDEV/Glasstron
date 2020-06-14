@@ -6,7 +6,12 @@
     "url": "https://patreon.com/arytonex"
   },
   "main": "src/index.js",
-  "scripts": {},
+  "scripts": {
+    "build-exe": "i686-w64-mingw32-g++ -static -static-libgcc -static-libstdc++ -o native/swca.exe src/native/win32_swca/lib/exec.cpp",
+    "build": "node ./binding.js",
+    "postinstall": "npm run build",
+    "test": "electron ./test"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AryToNeX/Glasstron.git"
@@ -29,6 +34,7 @@
     "electron": "^8.2.5"
   },
   "dependencies": {
-    "x11": "^2.3.0"
+    "x11": "^2.3.0",
+    "node-addon-api": "^3.0.0"
   }
 }

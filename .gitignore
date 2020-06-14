@@ -1,2 +1,5 @@
-node_modules/*
-package-lock.json
+.vscode
+.idea
+node_modules
+build
+native/swca.node

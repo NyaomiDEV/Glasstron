@@ -13,12 +13,15 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-"use strict";
+#include "swca.cpp"
 
-module.exports = class Darwin {
-	static update(win, values){
-		if(typeof values.vibrancy !== "undefined")
-			return win.setVibrancy(values.vibrancy);
-		return false;
-	}
+int main(int argc, char **argv){
+	if (argc < 4)
+		return 2;
+
+	return swca(
+		(HWND) std::stoull(argv[1]),
+		std::atoi(argv[2]),
+		std::atoi(argv[3])
+	);
 }
