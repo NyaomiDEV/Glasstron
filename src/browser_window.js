@@ -16,6 +16,7 @@
 "use strict";
 
 const electron = require("electron");
+const Main = require("./main.js");
 
 /*
  * The BrowserWindow override class
@@ -25,10 +26,11 @@ class BrowserWindow extends electron.BrowserWindow {
 		if(process.platform === "linux") options.transparent = true;
 
 		const _backgroundColor = options.backgroundColor;
-		options.backgroundColor = "#00000000";
+		options.backgroundColor = "#00ffffff";
 		// We do not call super to get an actual BrowserWindow from electron and not mess with native casts (broke GTK modals)
 		const window = new electron.BrowserWindow(options);
 		BrowserWindow._bindAndReplace(window, BrowserWindow.setBackgroundColor);
+		BrowserWindow._bindAndReplace(window, BrowserWindow.updateComposition);
 		if(typeof _backgroundColor !== "undefined")
 			window.webContents.on('dom-ready', () => window.setBackgroundColor(_backgroundColor));
 		return window;
@@ -49,6 +51,10 @@ class BrowserWindow extends electron.BrowserWindow {
 		}
 		if(typeof this._bgCssKey !== "undefined") return this.webContents.removeInsertedCSS(this._bgCssKey).then(callback);
 		else return callback();
+	}
+
+	static updateComposition(options){
+		return Main.getInstance().update(this, options);
 	}
 
 	static _bindAndReplace(object, method){

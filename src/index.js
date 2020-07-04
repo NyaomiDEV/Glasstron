@@ -18,18 +18,24 @@
 const electron = require("electron");
 const BrowserWindow = require("./browser_window.js");
 const Main = require("./main.js");
+const Hacks = require("./hacks.js");
 
 const __module = findModule("__glasstron");
 if(typeof __module !== "undefined")
 	module.exports = __module.exports;
 else{
 	module.exports = {
+		BrowserWindow,
+		Hacks,
+		// DEPRECATED STUFF FROM NOW ON
 		init: function(){
-			_inject();
+			console.warn("Glasstron.init() is deprecated! Please use the Glasstron.BrowserWindow export");
+			Hacks.injectOnElectron();
 			if(process.platform === "linux")
-				_overrideEmit();
+				Hacks.delayReadyEvent();
 		},
 		update: function(win, values){
+			console.warn("Glasstron.update() is deprecated! Please use the Glasstron.BrowserWindow export");
 			return Main.getInstance().update(win, values);
 		},
 		getPlatform: function(){
@@ -39,8 +45,6 @@ else{
 	module.__glasstron = true;
 }
 
-// ------------------------------------------------------------- FUNCTIONS
-
 function findModule(prop){
 	for(let module in require.cache){
 		if(typeof require.cache[module][prop] !== "undefined") return require.cache[module];
@@ -48,30 +52,4 @@ function findModule(prop){
 	return undefined;
 }
 
-function _inject(){
-	// Switches and configs that can be toggled on directly
-	if(process.platform === "linux" && !electron.app.commandLine.hasSwitch("enable-transparent-visuals"))
-		electron.app.commandLine.appendSwitch("enable-transparent-visuals"); // ALWAYS enable transparent visuals
-
-	// Replace BrowserWindow with our wrapper class
-	const electronPath = require.resolve("electron");
-	const newElectron = Object.assign({}, electron, { BrowserWindow }); // Create new electron object
-
-	delete require.cache[electronPath].exports; // Delete exports
-	require.cache[electronPath].exports = newElectron; // Assign the exports as the new electron
-
-	if(require.cache[electronPath].exports !== newElectron)
-		console.log("Something's wrong! Glasstron can't be injected properly!");
-};
-
-function _overrideEmit(){ // from Zack, blame Electron
-	const originalEmit = electron.app.emit;
-	electron.app.emit = function(event, ...args){
-		if(event !== "ready") return Reflect.apply(originalEmit, this, arguments);
-		setTimeout(() => {
-			electron.app.emit = originalEmit;
-			electron.app.emit("ready", ...args);
-		}, 1000);
-	};
-}
 

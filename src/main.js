@@ -29,7 +29,7 @@ module.exports = class Main {
 		return Main.prototype._instance;
 	}
 
-	update(win, values){
+	update(win, options){
 		const mappings = { // Glasstron platform types <--- process.platform types
 			"win32": "windows",
 			"linux": "linux",
@@ -37,8 +37,8 @@ module.exports = class Main {
 			"freebsd": "freebsd",
 			"sunos": "sunos"
 		};
-		if(values[mappings[process.platform]]){
-			this._platform.update(win, values[mappings[process.platform]]);
+		if(options[mappings[process.platform]]){
+			this._platform.update(win, options[mappings[process.platform]]);
 			return true;
 		}
 		return false;
@@ -54,8 +54,8 @@ module.exports = class Main {
 		try {
 			this._platform = require(`./platforms/${process.platform}.js`);
 		}catch(e){
-			console.log("It seems your platform is not supported by Glasstron!");
-			this._platform = class Dummy { static update(win, values){} };
+			console.error("It seems your platform is not supported by Glasstron!");
+			this._platform = class Dummy { static update(win, options){} };
 		}
 	}
 }
