@@ -36,7 +36,24 @@ else{
 		},
 		update: function(win, values){
 			console.warn("Glasstron.update() is deprecated! Please use the Glasstron.BrowserWindow export");
-			return Main.getInstance().update(win, values);
+			// HACKY DEPRECATED CODE FROM HERE!!
+			const mappings = { // Glasstron platform types <--- process.platform types
+				"win32": "windows",
+				"linux": "linux",
+				"darwin": "macos",
+				"freebsd": "freebsd",
+				"sunos": "sunos"
+			};
+			
+			let bool = false;
+			if(values[mappings[process.platform]]){
+				if(process.platform !== "win32")
+					bool = values[mappings[process.platform]];
+				else
+					bool = ["acrylic","transparent","blurbehind"].includes(values[mappings[process.platform]]);
+			}
+			
+			return Main.getInstance().setBlur(win, bool);
 		},
 		getPlatform: function(){
 			return Main.getInstance().getCurrentPlatform();

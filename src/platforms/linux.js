@@ -19,18 +19,28 @@ const x11 = require("../native/linux_x11/linux_x11.js");
 
 module.exports = class Linux {
 
-	static update(win, values){
-		if(typeof values.requestBlur === "boolean"){
-			Linux._getXWindowManager().then(res => {
-				switch(res){
-					case "KWin":
-						this._kwin_requestBlur(win, values.requestBlur);
-						break;
-					default:
-						break;
-				}
-			});
-		}
+	static setBlur(win, bool){
+		return Linux._getXWindowManager().then(res => {
+			switch(res){
+				case "KWin":
+					this._kwin_setBlur(win, bool);
+					break;
+				default:
+					break;
+			}
+		});
+	}
+
+	static getBlur(win){
+		return Linux._getXWindowManager().then(res => {
+			switch(res){
+				case "KWin":
+					return this._kwin_getBlur(win);
+					break;
+				default:
+					break;
+			}
+		});
 	}
 
 	/**
@@ -46,8 +56,8 @@ module.exports = class Linux {
 	 * This method handles blurring on KWin
 	 * Sorry, Wayland users (for now) :C
 	 */
-	static _kwin_requestBlur(win, mode){
-		if(mode)
+	static _kwin_setBlur(win, bool){
+		if(bool)
 			return x11.changeXProperty(
 				win.getNativeWindowHandle().readUInt32LE(),
 				"_KDE_NET_WM_BLUR_BEHIND_REGION",
@@ -59,6 +69,15 @@ module.exports = class Linux {
 			win.getNativeWindowHandle().readUInt32LE(),
 			"_KDE_NET_WM_BLUR_BEHIND_REGION"
 		);
+	}
+
+	static _kwin_getBlur(win){
+		return x11.getXProperty(
+			win.getNativeWindowHandle().readUInt32LE(), "_KDE_NET_WM_BLUR_BEHIND_REGION"
+		).then(res => {
+			if(res == 1) return true;
+			return false;
+		});
 	}
 
 }

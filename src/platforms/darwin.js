@@ -16,9 +16,11 @@
 "use strict";
 
 module.exports = class Darwin {
-	static update(win, values){
-		if(typeof values.vibrancy !== "undefined")
-			return win.setVibrancy(values.vibrancy);
-		return false;
+	static setBlur(win, bool){
+		return win.setVibrancy(bool ? "fullscreen-ui" : null);
+	}
+
+	static getBlur(win){
+		return win.getVibrancy() === null || win.getVibrancy() === "";
 	}
 }

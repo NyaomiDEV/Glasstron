@@ -29,19 +29,12 @@ module.exports = class Main {
 		return Main.prototype._instance;
 	}
 
-	update(win, options){
-		const mappings = { // Glasstron platform types <--- process.platform types
-			"win32": "windows",
-			"linux": "linux",
-			"darwin": "macos",
-			"freebsd": "freebsd",
-			"sunos": "sunos"
-		};
-		if(options[mappings[process.platform]]){
-			this._platform.update(win, options[mappings[process.platform]]);
-			return true;
-		}
-		return false;
+	setBlur(win, blur){
+		return this._platform.setBlur(win, blur);
+	}
+	
+	getBlur(win){
+		return this._platform.getBlur(win);
 	}
 
 	getCurrentPlatform(){

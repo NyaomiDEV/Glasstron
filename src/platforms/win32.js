@@ -19,12 +19,27 @@ const SWCA = require("../native/win32_swca/swca.js");
 
 module.exports = class Win32{
 
-	static update(win, values){
+	static setBlur(win, bool){
 		if(typeof win._swca === "undefined")
 			win._swca = new SWCA(win);
 
-		if(typeof values.blurType !== "undefined")
-			this._apply(win, values.blurType);
+		if(bool){
+			if(typeof win.blurType === "undefined")
+				win.blurType = "blurbehind";
+			this._apply(win, win.blurType);
+		}else{
+			this._apply(win, "none");
+		}
+	}
+	
+	static getBlur(win){
+		if(typeof win._swca === "undefined")
+			return false;
+		
+		if(typeof win.blurType === "undefined")
+			return false;
+		
+		return win._swca.getWindowCompositionAttribute() !== 0;
 	}
 
 	static _apply(win, type){
