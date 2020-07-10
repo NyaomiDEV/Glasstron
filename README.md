@@ -65,6 +65,7 @@ Or perhaps you want to send me a hug and a coffee? You can do so [here](https://
 - [Terminus](https://github.com/Eugeny/terminus) by Eugeny
 - [Dot Browser](https://github.com/dothq/browser) by Dot HQ
 - [Soundglass](https://github.com/pixldev/soundglass) by pixldev
+- [Lightcord](https://github.com/Lightcord/Lightcord) by Lightcord
 - Want yours featured? Issue a PR!
 
 ## License
