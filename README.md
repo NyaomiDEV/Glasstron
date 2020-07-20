@@ -14,24 +14,34 @@ $ npm install glasstron
 ```
 ```js
 const glasstron = require('glasstron');
-glasstron.init(); // Call it before requiring electron!
-
 const electron = require('electron');
-let win;
+electron.app.commandLine.appendSwitch("enable-transparent-visuals");
 electron.app.on('ready', () => {
-	win = new electron.BrowserWindow({
+	setTimeout(
+		spawnWindow,
+		process.platform == "linux" ? 1000 : 0
+		// Electron has a bug on linux where it
+		// won't initialize properly when using
+		// transparency. To work around that, it
+		// is necessary to delay the window
+		// spawn function.
+	);
+});
+
+function spawnWindow(){
+	win = new glasstron.BrowserWindow({
 		width: 800,
 		height: 600,
 		// ...
 	});
-	glasstron.update(win, {
-		windows: {blurType: 'acrylic'},
-		//                   ^~~~~~~
-		// Windows 10 1803+; for older versions you might want to use 'blurbehind'
-		macos: {vibrancy: 'fullscreen-ui'},
-		linux: {requestBlur: true} // KWin
-	});
-});
+	win.blurType = "acrylic";
+	//              ^~~~~~~
+	// Windows 10 1803+; for older versions you
+	// might want to use 'blurbehind'
+	win.setBlur(true);
+	// ...
+	return win;
+}
 
 // ...
 ```
@@ -50,9 +60,12 @@ Let's face it: achieving composition effects on Electron is painful. For referen
 Glasstron takes care of those problems and it also aims to support composition effects on Linux. Its ease of use is a distinct feature, so it can be adopted in both new and running projects. It supports Electron 7.1+ without any problem (that's a bold claim, if I am wrong please open an issue).
 
 ## Design and features
-Glasstron replaces Electron's `BrowserWindow` export with a modified version that's capable to deal with the common problems discussed earlier on its own. This means that it's simple to adopt and it doesn't break existing code as every call to broken methods is wrapped so nothing bad happens.
+Glasstron provides a custom version of Electron's `BrowserWindow` export that's capable to deal with the common problems discussed earlier on its own. This means that it's simple to adopt and it doesn't break existing code as every call to broken methods is wrapped so nothing bad happens.
 
-It also replaces the functionality of`win.setBackgroundColor()`: since there's no way to set a background color without breaking vibrancy materials on macOS, it will set the background color as injected CSS on the `:root` CSS selector. It can be overridden by CSS stylesheets, so be careful! (this was intended -- check the other project [Glasscord](https://github.com/AryToNeX/Glasscord) to know why).
+It also replaces the functionality of `win.setBackgroundColor()`: since there's no way to set a background color without breaking vibrancy materials on macOS, it will set the background color as injected CSS on the `:root` CSS selector. It can be overridden by CSS stylesheets, so be careful! (this was intended -- check the other project [Glasscord](https://github.com/AryToNeX/Glasscord) to know why).
+
+Note that Glasstron cannot do all the hard work (as with it prototype pollution will occur).
+Please look inside `src/hacks.js` to see common problems Glasstron used to solve automagically up until version 0.0.3.
 
 ## I want to contribute to this madness!
 Did you find a bug? File it in the issues section!

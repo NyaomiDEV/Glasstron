@@ -3,8 +3,6 @@
 const glasstron = require('..');
 const electron = require('electron');
 
-let win;
-
 electron.app.commandLine.appendSwitch("enable-transparent-visuals");
 electron.app.on('ready', () => {
 	setTimeout(
