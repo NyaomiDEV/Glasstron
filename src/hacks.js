@@ -20,7 +20,7 @@ const BrowserWindow = require("./browser_window.js");
 
 class Hacks {
 
-	static function injectOnElectron(){
+	static injectOnElectron(){
 		console.debug("Directly injecting into Electron.BrowserWindow is not recommended! Please use the Glasstron.BrowserWindow export instead.");
 		// Switches and configs that can be toggled on directly
 		if(process.platform === "linux" && !electron.app.commandLine.hasSwitch("enable-transparent-visuals"))
@@ -37,7 +37,7 @@ class Hacks {
 			console.error("Something's wrong! Glasstron can't be injected properly!");
 	}
 
-	static function delayReadyEvent(){ // from Zack, blame Electron
+	static delayReadyEvent(){ // from Zack, blame Electron
 		console.debug("Delaying the 'ready' event via the Glasstron Hacks class is not recommended! Please take care of it yourself!");
 		const originalEmit = electron.app.emit;
 		electron.app.emit = function(event, ...args){
