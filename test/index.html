@@ -1,0 +1,37 @@
+<html>
+	<head>
+		<style>
+		body {
+			background: transparent;
+		}
+		
+		h1 {
+			font-family: sans-serif;
+			color: white;
+		}
+		</style>
+	</head>
+	<body>
+		<center>
+			<h1>Glasstron testing app</h1>
+			<div class="container">
+			<button id="toggle">Toggle off</button>
+			</div>
+		</center>
+		
+		<script>
+			const electron = require("electron");
+			let toggled = true;
+			electron.ipcRenderer.on("blurToggled", (e, res) => {
+				console.log("swag toggled", res);
+				toggled = res;
+				document.getElementById("toggle").innerHTML = "Toggle " + (toggled ? "off" : "on");
+			});
+			
+			document.getElementById("toggle").onclick = function(){
+				console.log("swag toggling");
+				electron.ipcRenderer.send("blurToggle", !toggled);
+			};
+		</script>
+	</body>
+</html>
