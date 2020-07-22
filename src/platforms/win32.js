@@ -22,24 +22,21 @@ module.exports = class Win32{
 	static setBlur(win, bool){
 		if(typeof win._swca === "undefined")
 			win._swca = new SWCA(win);
-
-		if(bool){
-			if(typeof win.blurType === "undefined")
-				win.blurType = "blurbehind";
-			this._apply(win, win.blurType);
-		}else{
-			this._apply(win, "none");
-		}
+		
+		if(typeof win.blurType === "undefined")
+			win.blurType = "blurbehind";
+		
+		return Promise.resolve(this._apply(win, bool ? win.blurType : "none"));
 	}
 	
 	static getBlur(win){
 		if(typeof win._swca === "undefined")
-			return false;
+			return Promise.resolve(false);
 		
 		if(typeof win.blurType === "undefined")
-			return false;
+			return Promise.resolve(false);
 		
-		return win._swca.getWindowCompositionAttribute() !== 0;
+		return Promise.resolve(win._swca.getWindowCompositionAttribute() !== 0);
 	}
 
 	static _apply(win, type){

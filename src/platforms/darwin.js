@@ -17,10 +17,10 @@
 
 module.exports = class Darwin {
 	static setBlur(win, bool){
-		return win.setVibrancy(bool ? "fullscreen-ui" : null);
+		return Promise.resolve(win.setVibrancy(bool ? "fullscreen-ui" : null));
 	}
 
 	static getBlur(win){
-		return win.getVibrancy() === null || win.getVibrancy() === "";
+		return Promise.resolve(win.getVibrancy() === null || win.getVibrancy() === "");
 	}
 }

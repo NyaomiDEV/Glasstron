@@ -19,28 +19,26 @@ const x11 = require("../native/linux_x11/linux_x11.js");
 
 module.exports = class Linux {
 
-	static setBlur(win, bool){
-		return Linux._getXWindowManager().then(res => {
-			switch(res){
-				case "KWin":
-					this._kwin_setBlur(win, bool);
-					break;
-				default:
-					break;
-			}
-		});
+	static async setBlur(win, bool){
+		const wm = await Linux._getXWindowManager();
+		switch(wm){
+			case "KWin":
+				return this._kwin_setBlur(win, bool);
+				break;
+			default:
+				break;
+		}
 	}
 
-	static getBlur(win){
-		return Linux._getXWindowManager().then(res => {
-			switch(res){
-				case "KWin":
-					return this._kwin_getBlur(win);
-					break;
-				default:
-					break;
-			}
-		});
+	static async getBlur(win){
+		const wm = await Linux._getXWindowManager();
+		switch(wm){
+			case "KWin":
+				return this._kwin_getBlur(win);
+				break;
+			default:
+				break;
+		}
 	}
 
 	/**
@@ -71,13 +69,13 @@ module.exports = class Linux {
 		);
 	}
 
-	static _kwin_getBlur(win){
-		return x11.getXProperty(
+	static async _kwin_getBlur(win){
+		const value = await x11.getXProperty(
 			win.getNativeWindowHandle().readUInt32LE(), "_KDE_NET_WM_BLUR_BEHIND_REGION"
-		).then(res => {
-			if(res == 1) return true;
-			return false;
-		});
+		);
+		if(typeof value !== "undefined")
+			return true;
+		return false;
 	}
 
 }

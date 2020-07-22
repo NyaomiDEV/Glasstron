@@ -15,48 +15,73 @@
 */
 "use strict";
 
-const x11 = require("./x11_internals.js");
+const x11 = require("x11");
 
 module.exports = class X11Promisify {
 
-	static async getPropertyData(id, prop){
-		let promise = await new Promise((resolve, reject) => {
-			x11._internal_getPropertyData(id, prop, (data) => {
-				resolve(data);
-			});
-		}).catch(err => {throw err});
+	static getPropertyData(id, prop){
+		return new Promise((resolve) => {
+			x11.createClient((err, display) => {
+					let X = display.client;
+					if(typeof id === "undefined")
+						id = display.screen[0].root;
 
-		return promise;
+					X.GetProperty(0, id, prop, 0, 0, 10000000, (err, propData) => {
+						X.GetAtomName(propData.type, (err, typeName) => {
+							propData.typeName = typeName;
+							X.close();
+							resolve(propData);
+						});
+					});
+			}).on("error", (error) => {
+				resolve({
+					type: undefined,
+					bytesAfter: undefined,
+					data: undefined,
+					typeName: undefined
+				});
+			});
+		});
 	}
 
-	static async setPropertyData(id, prop, type, format, data){
-		let promise = await new Promise((resolve, reject) => {
-			x11._internal_setPropertyData(id, prop, type, format, data, () => {
+	static setPropertyData(id, prop, type, format, data){
+		return new Promise((resolve) => {
+			x11.createClient(function(err, display) {
+				let X = display.client;
+				if(typeof id === "undefined")
+					id = display.screen[0].root;
+				
+				X.ChangeProperty(0, id, prop, type, format, data);
+				X.close();
 				resolve();
 			});
-		}).catch(err => {throw err});
-
-		return promise;
+		});
 	}
 
-	static async deleteProperty(id, prop){
-		let promise = await new Promise((resolve, reject) => {
-			x11._internal_deleteProperty(id, prop, () => {
+	static deleteProperty(id, prop){
+		return new Promise((resolve) => {			
+			x11.createClient((err, display) => {
+				let X = display.client;
+				if(typeof id === "undefined")
+					id = display.screen[0].root;
+				
+				X.DeleteProperty(id, prop);
+				X.close();
 				resolve();
 			});
-		}).catch(err => {throw err});
-
-		return promise;
+		});
 	}
 
-	static async getAtomID(string){
-		let promise = await new Promise((resolve, reject) => {
-			x11._internal_getAtomID(string, (data) => {
-				resolve(data);
+	static getAtomID(string){
+		return new Promise((resolve) => {
+			x11.createClient((err, display) => {
+				let X = display.client;
+				X.InternAtom(false, string, (err, propId) => {
+					X.close();
+					resolve(propId);
+				});
 			});
-		}).catch(err => {throw err});
-
-		return promise;
+		});
 	}
 
 }

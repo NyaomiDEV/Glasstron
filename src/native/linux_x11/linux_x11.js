@@ -21,21 +21,22 @@ const encoder = require("./encode.js");
 
 module.exports = class LinuxX11 {
 
-	static getXWindowManager(){
-		return x11.getPropertyData(undefined, "_NET_SUPPORTING_WM_CHECK").then((data) => {
-			const wmid = decoder.decodeNumbers(data.data)[0];
-			return x11.getPropertyData(wmid, "_NET_WM_NAME").then((data) => {
-				return decoder.decodeUTF8String(data.data)[0];
-			});
-		});
+	static async getXWindowManager(){
+		const wmCheckProp = await x11.getAtomID("_NET_SUPPORTING_WM_CHECK");
+		const wmCheck = await x11.getPropertyData(undefined, wmCheckProp);
+		const wmid = decoder.decodeNumbers(wmCheck.data)[0];
+		const wmNameProp = await x11.getAtomID("_NET_WM_NAME");
+		const data = await x11.getPropertyData(wmid, wmNameProp);
+		return decoder.decodeUTF8String(data.data)[0];
 	}
 
-	static getXProperty(xid, propName){
-		return x11.getAtomID(propName).then((prop) => {
-			return x11.getPropertyData(xid, prop).then((data) => {
-				return decoder.decodeFromTypeName(data.typeName, data.data);
-			});
-		});
+	static async getXProperty(xid, propName){
+		const prop = await x11.getAtomID(propName);
+		const data = await x11.getPropertyData(xid, prop);
+		if(typeof data.typeName === "undefined")
+			return undefined;
+		
+		return decoder.decodeFromTypeName(data.typeName, data.data);
 	}
 
 	static async changeXProperty(xid, propName, typeName, format, data){
@@ -45,10 +46,9 @@ module.exports = class LinuxX11 {
 		return x11.setPropertyData(xid, prop, type, format, _encoded);
 	}
 
-	static deleteXProperty(xid, propName){
-		return x11.getAtomID(propName).then((prop) => {
-			return x11.deleteProperty(xid, prop);
-		});
+	static async deleteXProperty(xid, propName){
+		const prop = await x11.getAtomID(propName);
+		return x11.deleteProperty(xid, prop);
 	}
 
 }
