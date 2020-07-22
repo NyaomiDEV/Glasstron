@@ -20,8 +20,8 @@ const SWCA = require("../native/win32_swca/swca.js");
 module.exports = class Win32{
 
 	static setBlur(win, bool){
-		if(typeof win._swca === "undefined")
-			win._swca = new SWCA(win);
+		if(typeof win.getSWCA === "undefined")
+			this._defineSwca(win);
 		
 		if(typeof win.blurType === "undefined")
 			win.blurType = "blurbehind";
@@ -30,30 +30,49 @@ module.exports = class Win32{
 	}
 	
 	static getBlur(win){
-		if(typeof win._swca === "undefined")
+		if(typeof win.getSWCA === "undefined")
 			return Promise.resolve(false);
 		
 		if(typeof win.blurType === "undefined")
 			return Promise.resolve(false);
 		
-		return Promise.resolve(win._swca.getWindowCompositionAttribute() !== 0);
+		return Promise.resolve(win.getSWCA().getWindowCompositionAttribute() !== 0);
 	}
 
 	static _apply(win, type){
 		switch(type){
 			case "acrylic":
-				win._swca.setAcrylic();
+				win.getSWCA().setAcrylic();
 				break;
 			case "blurbehind":
-				win._swca.setBlurBehind();
+				win.getSWCA().setBlurBehind();
 				break;
 			case "transparent":
-				win._swca.setTransparentGradient();
+				win.getSWCA().setTransparentGradient();
 				break;
 			case "none":
 			default:
-				win._swca.disable();
+				win.getSWCA().disable();
 				break;
 		}
+	}
+	
+	static _defineSwca(win){
+		const _swca = new SWCA(win);
+		const boundFunction = (() => _swca).bind(win);
+		Object.defineProperty(win, "getSWCA", {
+			get: () => boundFunction
+		})
+	}
+	
+	static _defineBlurType(win){
+		let _blurType;
+		Object.defineProperty(win, "blurType", {
+			get: () => _blurType,
+			set: async (_newBlurType) => {
+				_blurType = _newBlurType;
+				await win.setBlur(!(await win.getBlur()));
+			}
+		});
 	}
 }
