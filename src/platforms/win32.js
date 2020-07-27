@@ -21,7 +21,7 @@ const DWM = require("../native/win32_dwm/dwm.js");
 
 module.exports = class Win32 extends Platform {
 
-	static init(win){
+	static init(win, _options){
 		if(typeof win.getDWM === "undefined")
 			this._defineDWM(win);
 		
@@ -31,7 +31,7 @@ module.exports = class Win32 extends Platform {
 
 	static setBlur(win, bool){
 		this.init(win);
-		return Promise.resolve(this._apply(win, bool ? win.blurType : "none"));
+		return Promise.resolve(this._apply(win, bool ? win.blurType : null));
 	}
 
 	static getBlur(win){
@@ -47,18 +47,18 @@ module.exports = class Win32 extends Platform {
 	static _apply(win, type){
 		switch(type){
 			case "acrylic":
-				win.getDWM().setAcrylic();
-				break;
+				return win.getDWM().setAcrylic();
 			case "blurbehind":
-				win.getDWM().setBlurBehind();
-				break;
+				return win.getDWM().setBlurBehind();
 			case "transparent":
-				win.getDWM().setTransparentGradient();
-				break;
+				return win.getDWM().setTransparentGradient();
 			case "none":
+			case null:
+			case "":
+				return win.getDWM().disable();
 			default:
-				win.getDWM().disable();
-				break;
+				throw "Blur type is not recognized: please specify one of 'acrylic', 'blurbehind', 'transparent', 'none'.";
+				return false;
 		}
 	}
 
@@ -67,11 +67,11 @@ module.exports = class Win32 extends Platform {
 		const boundFunction = (() => _DWM).bind(win);
 		Object.defineProperty(win, "getDWM", {
 			get: () => boundFunction
-		})
+		});
 	}
 
 	static _defineBlurType(win){
-		let _blurType = "none";
+		let _blurType = null;
 		Object.defineProperty(win, "blurType", {
 			get: () => _blurType,
 			set: async (_newBlurType) => {

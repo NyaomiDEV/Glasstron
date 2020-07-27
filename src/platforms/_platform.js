@@ -17,7 +17,7 @@
 
 module.exports = class Platform{
 
-	static init(win){}
+	static init(win, _options){}
 
 	static setBlur(win, bool){}
 

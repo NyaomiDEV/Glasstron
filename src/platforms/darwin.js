@@ -18,11 +18,45 @@
 const Platform = require("./_platform.js");
 
 module.exports = class Darwin extends Platform {
+
+	static init(win, _options){
+		this._wrapVibrancy(win, _options.vibrancy || null);
+	}
+
 	static setBlur(win, bool){
-		return Promise.resolve(win.setVibrancy(bool ? "fullscreen-ui" : null));
+		return Promise.resolve(win.setVibrancy(bool ? win.vibrancy : null));
 	}
 
 	static getBlur(win){
-		return Promise.resolve(win.getVibrancy() === null || win.getVibrancy() === "");
+		return Promise.resolve(win.getVibrancy() === null);
+	}
+
+	static _wrapVibrancy(win, vibrancyInitialValue = "fullscreen-ui"){
+		const originalFunction = win.setVibrancy;
+		let _vibrancy = vibrancyInitialValue;
+		let _vibrancyInternal = _vibrancy;
+		Object.defineProperty(win, "vibrancy", {
+			get: () => _vibrancy,
+			set: async (_newVibrancy) => {
+				if(typeof _newVibrancy === "undefined") return;
+				if(_newVibrancy === "")
+					_newVibrancy = null;
+				if(_newVibrancy === null){
+					originalFunction(null);
+					_vibrancyInternal = null;
+					return;
+				}
+				_vibrancyInternal = _newVibrancy;
+				_vibrancy = _vibrancyInternal;
+				if(_vibrancyInternal !== null) originalFunction(_vibrancy);
+			}
+		});
+		const boundFunction = ((vibrancy) => {this.vibrancy = vibrancy;}).bind(win);
+		Object.defineProperty(win, "setVibrancy", {
+			get: () => boundFunction
+		});
+		Object.defineProperty(win, "getVibrancy", {
+			get: () => _vibrancyInternal
+		});
 	}
 }
