@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-#include "swca.h"
+#include "dwm.h"
 
 int swca(HWND hwnd, int accentState, int color) {
 	const HINSTANCE hModule = LoadLibrary(TEXT("user32.dll"));

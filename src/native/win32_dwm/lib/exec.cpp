@@ -13,30 +13,15 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-#include <napi.h>
+#include "dwm.cpp"
 
-#include "swca.cpp"
+int main(int argc, char **argv){
+	if (argc < 4)
+		return 2;
 
-Napi::Number set_window_composition_attribute(const Napi::CallbackInfo &info){
-	Napi::Env env{info.Env()};
-
-	return Napi::Number::New(
-		env,
-		swca(
-			(HWND) info[0].As<Napi::Number>().Int64Value(),
-			info[1].As<Napi::Number>().Int32Value(),
-			info[2].As<Napi::Number>().Int32Value()
-		)
+	return swca(
+		(HWND) std::stoull(argv[1]),
+		std::atoi(argv[2]),
+		std::atoi(argv[3])
 	);
 }
-
-Napi::Object Init(Napi::Env env, Napi::Object exports){
-	exports.Set(
-		Napi::String::New(env, "setWindowCompositionAttribute"),
-		Napi::Function::New(env, set_window_composition_attribute)
-	);
-
-	return exports;
-}
-
-NODE_API_MODULE(addon, Init)

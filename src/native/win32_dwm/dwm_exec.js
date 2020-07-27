@@ -19,18 +19,18 @@ const path = require("path");
 const execFile = require("util").promisify(require("child_process").execFile);
 const Utils = require("../../utils.js");
 
-module.exports = class SWCAExec {
+module.exports = class DWMExec {
 
 	constructor(){
 		this._p = Promise.resolve();
-		if(!Utils.isInPath("swca.exe"))
-			Utils.copyToPath(path.resolve(__dirname, "..", "..", "..", "native", "swca.exe"), "swca.exe");
+		if(!Utils.isInPath("dwm_exec.exe"))
+			Utils.copyToPath(path.resolve(__dirname, "..", "..", "..", "native", "dwm_exec.exe"), "dwm_exec.exe");
 
-		this.swca = path.resolve(Utils.getSavePath(), "swca.exe");
+		this.dwm = path.resolve(Utils.getSavePath(), "dwm_exec.exe");
 	}
 
 	setWindowCompositionAttribute(hwnd, mode, tint){
-		return this._p = this._p.then(() => {return execFile(this.swca, [hwnd, mode, tint])});
+		return this._p = this._p.then(() => {return execFile(this.dwm, [hwnd, mode, tint])});
 	}
 
 }

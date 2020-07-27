@@ -1,0 +1,26 @@
+body {
+	background: #00000080;
+	margin: 0;
+}
+
+h1 {
+	font-family: sans-serif;
+	color: white;
+}
+
+p {
+	font-family: sans-serif;
+	color: white;
+}
+
+.hidden {
+	display: none;
+}
+
+.windowbar-maximize {
+	display: none;
+}
+
+.windowbar-title {
+	color: white !important;
+}

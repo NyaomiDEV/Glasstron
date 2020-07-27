@@ -20,8 +20,8 @@ const fs = require("fs").promises;
 const _path = require("path");
 
 async function bindings(){
-	if(await fs.stat(_path.resolve(__dirname, "build", "Release", "swca.node"))){
-		console.log("Glasstron's native SWCA addon was built. Cleaning up...");
+	if(await fs.stat(_path.resolve(__dirname, "build", "Release", "dwm.node"))){
+		console.log("Glasstron's native DWM addon was built. Cleaning up...");
 	}else{
 		try{
 			await execFile("npx", ["node-gyp", "rebuild"], {cwd: __dirname});
@@ -32,7 +32,7 @@ async function bindings(){
 			console.log("Node-gyp finished. Cleaning up...");
 	}
 
-	await fs.rename(_path.resolve(__dirname, "build", "Release", "swca.node"), _path.resolve(__dirname, "native", "swca.node"));
+	await fs.rename(_path.resolve(__dirname, "build", "Release", "dwm.node"), _path.resolve(__dirname, "native", "dwm.node"));
 	await removeRecursive(_path.resolve(__dirname, "build"));
 	console.log("Done!");
 }

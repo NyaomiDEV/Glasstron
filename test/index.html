@@ -1,33 +1,6 @@
 <html>
 	<head>
-		<style>
-		body {
-			background: #00000080;
-			margin: 0;
-		}
-		
-		h1 {
-			font-family: sans-serif;
-			color: white;
-		}
-		
-		p {
-			font-family: sans-serif;
-			color: white;
-		}
-		
-		.hidden {
-			display: none;
-		}
-		
-		.windowbar-maximize {
-			display: none;
-		}
-		
-		.windowbar-title {
-			color: white !important;
-		}
-		</style>
+		<link href="style.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
 		<div id="windowbar"></div>
@@ -39,51 +12,11 @@
 					<p id="win32-p">Current blur type: blurbehind</p>
 					<select id="win32-select">
 						<option value="blurbehind">blurbehind</option>
-						<option value="acrylic">acrylic</option>
 						<option value="transparent">transparent</option>
-						<option value="none">none</option>
 					</select>
 				</div>
 			</div>
 		</center>
-		
-		<script>
-			const electron = require("electron");
-
-			const wb = new (require('windowbar'))(
-			{
-				style: 'mac',
-				title: "Glasstron",
-				transparent: true
-			}).on('close', () => electron.ipcRenderer.send("close"))
-				.on('minimize', () => electron.ipcRenderer.send("minimize"))
-				.appendTo(document.getElementById("windowbar"));
-
-			let toggled = true;
-			electron.ipcRenderer.on("blurToggled", (e, res) => {
-				console.log("swag toggled", res);
-				toggled = res;
-				document.getElementById("toggle").innerHTML = "Toggle " + (toggled ? "off" : "on");
-			});
-			
-			document.getElementById("toggle").onclick = function(){
-				console.log("swag toggling");
-				electron.ipcRenderer.send("blurToggle", !toggled);
-			};
-			
-			if(process.platform === "win32"){
-				document.getElementById("win32-select").onchange = function(){
-					console.log("swag blurtype");
-					electron.ipcRenderer.send("blurTypeChange", document.getElementById("win32-select").value);
-				}
-				
-				electron.ipcRenderer.on("blurTypeChanged", (e, res) => {
-					console.log("swag blurtype changed", res);
-					document.getElementById("win32-p").innerHTML = "Current blur type: " + res.toString();
-				});
-				
-				document.getElementById("win32").classList.remove("hidden");
-			}
-		</script>
+		<script src="render.js"></script>
 	</body>
 </html>

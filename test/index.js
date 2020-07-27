@@ -34,10 +34,13 @@ function spawnWindow(){
 		electron.ipcMain.on("blurTypeChange", (e, value) => {
 		const win = electron.BrowserWindow.fromWebContents(e.sender);
 			if(win !== null){
-				console.log("blurTypeChange", value);
 				win.blurType = value;
 				e.sender.send("blurTypeChanged", win.blurType);
 			}
+		});
+		win.webContents.on("did-finish-load", () => {
+			if(win.getDWM().constructor.isWindows10April18OrAbove())
+				win.webContents.send("supportsAcrylic");
 		});
 	}
 

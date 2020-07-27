@@ -17,34 +17,35 @@
 
 const os = require("os");
 
-module.exports = class SWCA{
+module.exports = class DWM{
 
 	constructor(win){
 		this.win = win;
 		this.hwnd = this.win.getNativeWindowHandle()["readInt32" + os.endianness]();
 		this.wattr = [0, 0];
 
-		console.debug("[Glasstron/SWCA] Trying to load the native SWCA module...");
+		console.debug("[Glasstron/DWM] Trying to load the native module...");
 		try{
-			this.__swca = require("../../../native/swca.node");
-			console.debug("[Glasstron/SWCA] Native SWCA module loaded");
+			this.__dwm = require("../../../native/dwm.node");
+			console.debug("[Glasstron/DWM] Native module loaded");
 		}catch(_){
-			console.debug("[Glasstron/SWCA] Native SWCA module failed to load. Falling back to the executable.");
-			this.__swca = new (require("./swca_executable.js"))();
+			console.debug("[Glasstron/DWM] Native module failed to load. Falling back to the executable.");
+			this.__dwm = new (require("./dwm_exec.js"))();
 		}
 	}
 	
 	setWindowCompositionAttribute(mode, tint){
 		this.wattr = [mode, tint];
-		return this.__swca.setWindowCompositionAttribute(this.hwnd, mode, tint);
+		return this.__dwm.setWindowCompositionAttribute(this.hwnd, mode, tint);
 	}
 	
 	getWindowCompositionAttribute(){
 		return this.wattr;
 	}
 
-	disable(){
-		return this.setWindowCompositionAttribute(0, 0);
+	// TINT IS IN AGBR VALUES!!
+	disable(tint = 0xffffffff){
+		return this.setWindowCompositionAttribute(0, tint);
 	}
 
 	setGradient(tint = 0xffffffff){
