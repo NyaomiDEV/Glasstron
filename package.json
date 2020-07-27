@@ -31,11 +31,11 @@
   },
   "homepage": "https://github.com/AryToNeX/Glasstron#readme",
   "devDependencies": {
-    "electron": ">=7.1.11"
+    "electron": ">=7.1.11",
+    "windowbar": "^1.7.3"
   },
   "dependencies": {
     "node-addon-api": "^3.0.0",
-    "windowbar": "^1.7.3",
     "x11": "^2.3.0"
   }
 }
