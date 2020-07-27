@@ -34,7 +34,7 @@
     "electron": ">=7.1.11"
   },
   "dependencies": {
-    "x11": "^2.3.0",
-    "node-addon-api": "^3.0.0"
+    "node-addon-api": "^3.0.0",
+    "x11": "^2.3.0"
   }
 }
