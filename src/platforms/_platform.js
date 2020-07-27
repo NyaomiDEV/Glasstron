@@ -15,14 +15,12 @@
 */
 "use strict";
 
-const Platform = require("./_platform.js");
+module.exports = class Platform{
 
-module.exports = class Darwin extends Platform {
-	static setBlur(win, bool){
-		return Promise.resolve(win.setVibrancy(bool ? "fullscreen-ui" : null));
-	}
+	static init(win){}
 
-	static getBlur(win){
-		return Promise.resolve(win.getVibrancy() === null || win.getVibrancy() === "");
-	}
+	static setBlur(win, bool){}
+
+	static getBlur(win){}
+
 }

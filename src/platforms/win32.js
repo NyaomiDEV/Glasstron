@@ -15,20 +15,25 @@
 */
 "use strict";
 
+const Platform = require("./_platform.js");
+
 const SWCA = require("../native/win32_swca/swca.js");
 
-module.exports = class Win32{
+module.exports = class Win32 extends Platform {
 
-	static setBlur(win, bool){
+	static init(win){
 		if(typeof win.getSWCA === "undefined")
 			this._defineSwca(win);
 		
 		if(typeof win.blurType === "undefined")
-			win.blurType = "blurbehind";
-		
+			this._defineBlurType(win);
+	}
+
+	static setBlur(win, bool){
+		this.init(win);
 		return Promise.resolve(this._apply(win, bool ? win.blurType : "none"));
 	}
-	
+
 	static getBlur(win){
 		if(typeof win.getSWCA === "undefined")
 			return Promise.resolve(false);
@@ -36,7 +41,7 @@ module.exports = class Win32{
 		if(typeof win.blurType === "undefined")
 			return Promise.resolve(false);
 		
-		return Promise.resolve(win.getSWCA().getWindowCompositionAttribute() !== 0);
+		return Promise.resolve(win.getSWCA().getWindowCompositionAttribute()[0] !== 0);
 	}
 
 	static _apply(win, type){
@@ -56,7 +61,7 @@ module.exports = class Win32{
 				break;
 		}
 	}
-	
+
 	static _defineSwca(win){
 		const _swca = new SWCA(win);
 		const boundFunction = (() => _swca).bind(win);
@@ -64,14 +69,19 @@ module.exports = class Win32{
 			get: () => boundFunction
 		})
 	}
-	
+
 	static _defineBlurType(win){
-		let _blurType;
+		let _blurType = "none";
 		Object.defineProperty(win, "blurType", {
 			get: () => _blurType,
 			set: async (_newBlurType) => {
+				if(_newBlurType == "none"){
+					await win.setBlur(false);
+					return;
+				}
 				_blurType = _newBlurType;
-				await win.setBlur(!(await win.getBlur()));
+				const shouldUpdate = await win.getBlur();
+				if(shouldUpdate) await win.setBlur(true);
 			}
 		});
 	}

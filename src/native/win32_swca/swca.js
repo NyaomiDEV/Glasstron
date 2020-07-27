@@ -22,13 +22,14 @@ module.exports = class SWCA{
 	constructor(win){
 		this.win = win;
 		this.hwnd = this.win.getNativeWindowHandle()["readInt32" + os.endianness]();
+		this.wattr = [0, 0];
 
-		console.log("[Glasstron/SWCA] Trying to load the native SWCA module...");
+		console.debug("[Glasstron/SWCA] Trying to load the native SWCA module...");
 		try{
 			this.__swca = require("../../../native/swca.node");
-			console.log("[Glasstron/SWCA] Native SWCA module loaded");
+			console.debug("[Glasstron/SWCA] Native SWCA module loaded");
 		}catch(_){
-			console.log("[Glasstron/SWCA] Native SWCA module failed to load. Falling back to the executable.");
+			console.debug("[Glasstron/SWCA] Native SWCA module failed to load. Falling back to the executable.");
 			this.__swca = new (require("./swca_executable.js"))();
 		}
 	}
@@ -46,19 +47,19 @@ module.exports = class SWCA{
 		return this.setWindowCompositionAttribute(0, 0);
 	}
 
-	setGradient(tint = 0xff000000){
+	setGradient(tint = 0xffffffff){
 		return this.setWindowCompositionAttribute(1, tint);
 	}
 
-	setTransparentGradient(tint = 0x00000000){
+	setTransparentGradient(tint = 0x00ffffff){
 		return this.setWindowCompositionAttribute(2, tint);
 	}
 
-	setBlurBehind(tint = 0x00000000){
+	setBlurBehind(tint = 0x00ffffff){
 		return this.setWindowCompositionAttribute(3, tint);
 	}
 
-	setAcrylic(tint = 0x00000001){
+	setAcrylic(tint = 0x00ffffff){
 		if(!this.constructor.isWindows10April18OrAbove()) return this.setBlurBehind(tint);
 		return this.setWindowCompositionAttribute(4, tint);
 	}

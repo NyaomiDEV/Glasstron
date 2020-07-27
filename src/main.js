@@ -36,6 +36,10 @@ module.exports = class Main {
 	getBlur(win){
 		return this._platform.getBlur(win);
 	}
+	
+	init(win){
+		return this._platform.init(win);
+	}
 
 	getCurrentPlatform(){
 		return this._platform;
@@ -48,7 +52,7 @@ module.exports = class Main {
 			this._platform = require(`./platforms/${process.platform}.js`);
 		}catch(e){
 			console.error("It seems your platform is not supported by Glasstron!");
-			this._platform = class Dummy { static update(win, options){} };
+			this._platform = require("./platforms/_platform.js"); // serves as dummy anyway
 		}
 	}
 }

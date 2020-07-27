@@ -15,9 +15,11 @@
 */
 "use strict";
 
+const Platform = require("./_platform.js");
+
 const x11 = require("../native/linux_x11/linux_x11.js");
 
-module.exports = class Linux {
+module.exports = class Linux extends Platform {
 
 	static async setBlur(win, bool){
 		const wm = await Linux._getXWindowManager();

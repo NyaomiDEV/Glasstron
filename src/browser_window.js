@@ -32,6 +32,7 @@ class BrowserWindow extends electron.BrowserWindow {
 		BrowserWindow._bindAndReplace(window, BrowserWindow.setBackgroundColor);
 		BrowserWindow._bindAndReplace(window, BrowserWindow.getBlur);
 		BrowserWindow._bindAndReplace(window, BrowserWindow.setBlur);
+		Main.getInstance().init(window);
 		if(typeof _backgroundColor !== "undefined")
 			window.webContents.on('dom-ready', () => window.setBackgroundColor(_backgroundColor));
 		return window;

@@ -17,8 +17,11 @@ function spawnWindow(){
 		width: 800,
 		height: 600,
 		backgroundColor: "#00000000",
-		transparent: true,
+		resizable: true,
 		title: "Glasstron test window",
+		autoHideMenuBar: true,
+		frame: false, // this is a requirement for transparent windows it seems
+		show: false,
 		webPreferences: {
 			nodeIntegration: true
 		}
@@ -26,9 +29,20 @@ function spawnWindow(){
 	
 	win.webContents.loadURL(`file://${__dirname}/index.html`);
 	
-	win.blurType = "blurbehind";
+	if(process.platform === "win32"){
+		win.blurType = "blurbehind";
+		electron.ipcMain.on("blurTypeChange", (e, value) => {
+		const win = electron.BrowserWindow.fromWebContents(e.sender);
+			if(win !== null){
+				console.log("blurTypeChange", value);
+				win.blurType = value;
+				e.sender.send("blurTypeChanged", win.blurType);
+			}
+		});
+	}
+
 	win.setBlur(true);
-	
+
 	electron.ipcMain.on("blurToggle", async (e, value) => {
 		const win = electron.BrowserWindow.fromWebContents(e.sender);
 		if(win !== null){
@@ -37,5 +51,15 @@ function spawnWindow(){
 		}
 	});
 	
+	electron.ipcMain.on("close", () => {
+		electron.app.quit()
+	});
+	electron.ipcMain.on("minimize", (e) => {
+		const win = electron.BrowserWindow.fromWebContents(e.sender);
+		win.minimize();
+	});
+
+	win.show();
+
 	return win;
 }
