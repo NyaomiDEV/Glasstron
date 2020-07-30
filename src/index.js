@@ -46,14 +46,22 @@ else{
 			};
 			
 			let bool = false;
-			if(values[mappings[process.platform]]){
-				if(process.platform !== "win32")
-					bool = values[mappings[process.platform]];
-				else
-					bool = ["acrylic","transparent","blurbehind"].includes(values[mappings[process.platform]]);
-			}
+			if(values[mappings[process.platform]])
+				switch(process.platform){
+					case "win32":
+						bool = ["acrylic","transparent","blurbehind"].includes(values[mappings[process.platform]]);
+						win.blurType = values[mappings[process.platform]];
+						break;
+					case "darwin":
+						bool = values[mappings[process.platform]] !== "" && values[mappings[process.platform]] !== null;
+						win.vibrancy = values[mappings[process.platform]];
+						break;
+					default:
+						bool = values[mappings[process.platform]];
+						break;
+				}
 			
-			return Main.getInstance().setBlur(win, bool);
+			return win.setBlur(bool);
 		},
 		getPlatform: function(){
 			return Main.getInstance().getCurrentPlatform();
