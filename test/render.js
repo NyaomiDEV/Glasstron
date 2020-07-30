@@ -10,8 +10,10 @@ const wb = new (require('windowbar'))(
 	.on('minimize', () => electron.ipcRenderer.send("minimize"))
 	.appendTo(document.getElementById("windowbar"));
 
-let toggled = true;
-electron.ipcRenderer.on("blurToggled", (e, res) => {
+let toggled = null;
+electron.ipcRenderer.send("blurQuery");
+
+electron.ipcRenderer.on("blurStatus", (e, res) => {
 	toggled = res;
 	document.getElementById("toggle").innerHTML = "Toggle " + (toggled ? "off" : "on");
 });

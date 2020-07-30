@@ -17,7 +17,15 @@
 
 module.exports = class Platform{
 
-	static init(win, _options){}
+	// override this or just use it idk
+	static init(win, _options){
+		Object.defineProperty(win, "getBlur", {
+			get: () => () => this.getBlur(win)
+		});
+		Object.defineProperty(win, "setBlur", {
+			get: () => (blur) => this.setBlur(win, blur)
+		});
+	}
 
 	static setBlur(win, bool){}
 

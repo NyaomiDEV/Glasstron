@@ -30,11 +30,11 @@ class BrowserWindow extends electron.BrowserWindow {
 		// We do not call super to get an actual BrowserWindow from electron and not mess with native casts (broke GTK modals)
 		const window = new electron.BrowserWindow(options);
 		BrowserWindow._bindAndReplace(window, BrowserWindow.setBackgroundColor);
-		BrowserWindow._bindAndReplace(window, BrowserWindow.getBlur);
-		BrowserWindow._bindAndReplace(window, BrowserWindow.setBlur);
 		Main.getInstance().init(window, options);
 		if(typeof _backgroundColor !== "undefined")
 			window.webContents.on('dom-ready', () => window.setBackgroundColor(_backgroundColor));
+		if(typeof options.blur !== "undefined")
+			window.setBlur(options.blur);
 		return window;
 	}
 
@@ -53,14 +53,6 @@ class BrowserWindow extends electron.BrowserWindow {
 		}
 		if(typeof this._bgCssKey !== "undefined") return this.webContents.removeInsertedCSS(this._bgCssKey).then(callback);
 		else return callback();
-	}
-
-	static setBlur(blur){
-		return Main.getInstance().setBlur(this, blur);
-	}
-	
-	static getBlur(){
-		return Main.getInstance().getBlur(this);
 	}
 
 	static _bindAndReplace(object, method){

@@ -26,7 +26,9 @@ module.exports = class Win32 extends Platform {
 			this._defineDWM(win);
 		
 		if(typeof win.blurType === "undefined")
-			this._defineBlurType(win);
+			this._defineBlurType(win, _options.blurType);
+		
+		super.init(win, _options);
 	}
 
 	static setBlur(win, bool){
@@ -70,8 +72,16 @@ module.exports = class Win32 extends Platform {
 		});
 	}
 
-	static _defineBlurType(win){
-		let _blurType = null;
+	/**
+	 * Note for everyone, not just developers and contributors
+	 * the win.blurType variable should always return a string
+	 * between "acrylic", "blurbehind" and "transparent".
+	 * It can return null but only initially, when the blurType is not set.
+	 * It MUST NOT return null afterwards, even if win.setBlur(false) has been called.
+	 * win.blurType defines the blurring effect to be used when blurring.
+	 */
+	static _defineBlurType(win, _defaultValue = null){
+		let _blurType = _defaultValue;
 		Object.defineProperty(win, "blurType", {
 			get: () => _blurType,
 			set: async (_newBlurType) => {
