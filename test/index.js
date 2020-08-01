@@ -10,6 +10,7 @@ electron.app.on("ready", () => {
 		spawnWindow,
 		process.platform == "linux" ? 1000 : 0
 	);
+	electron.nativeTheme.on("updated", checkDarkTheme);
 });
 
 function spawnWindow(){
@@ -22,7 +23,7 @@ function spawnWindow(){
 		autoHideMenuBar: true,
 		frame: false, // this is a requirement for transparent windows it seems
 		show: true,
-		blur: false,
+		blur: true,
 		blurType: "blurbehind",
 		vibrancy: "fullscreen-ui",
 		webPreferences: {
@@ -41,8 +42,11 @@ function spawnWindow(){
 			}
 		});
 		win.webContents.on("did-finish-load", () => {
-			if(win.getDWM().constructor.isWindows10April18OrAbove())
+			checkDarkTheme();
+			if(win.getDWM().supportsAcrylic()){
+				acrylicWorkaround(win, 60);
 				win.webContents.send("supportsAcrylic");
+			}
 		});
 	}
 
@@ -68,4 +72,75 @@ function spawnWindow(){
 	});
 
 	return win;
+}
+
+function checkDarkTheme(){
+	electron.BrowserWindow.getAllWindows().forEach((win) => {
+		win.webContents.send("darkTheme", electron.nativeTheme.shouldUseDarkColors);
+	});
+}
+
+function acrylicWorkaround(win, pollingRate = 60){
+	// Replace window moving behavior to fix mouse polling rate bug
+	win.on('will-move', (e) => {
+		if(win.blurType !== "acrylic")
+			return;
+		
+		e.preventDefault();
+
+		// Track if the user is moving the window
+		if(win._moveTimeout)
+			clearTimeout(win._moveTimeout);
+
+		win._moveTimeout = setTimeout(
+			() => {
+				win._isMoving = false;
+				clearInterval(win._moveInterval);
+				win._moveInterval = null;
+			}, 1000/pollingRate);
+
+		// Start new behavior if not already
+		if(!win._isMoving){
+			win._isMoving = true;
+			if(win._moveInterval)
+				return false;
+
+			// Get start positions
+			win._moveLastUpdate = 0;
+			win._moveStartBounds = win.getBounds();
+			win._moveStartCursor = electron.screen.getCursorScreenPoint();
+
+			// Poll at (refreshRate * 10) hz while moving window
+			win._moveInterval = setInterval(() => {
+				const now = Date.now();
+				if(now >= win._moveLastUpdate + (1000/pollingRate)){
+					win._moveLastUpdate = now;
+					const cursor = electron.screen.getCursorScreenPoint();
+
+					// Set new position
+					win.setBounds({
+						x: win._moveStartBounds.x + (cursor.x - win._moveStartCursor.x),
+						y: win._moveStartBounds.y + (cursor.y - win._moveStartCursor.y),
+						width: win._moveStartBounds.width,
+						height: win._moveStartBounds.height
+					});
+				}
+			}, 1000/(pollingRate * 10));
+		}
+	});
+
+	// Replace window resizing behavior to fix mouse polling rate bug
+	win.on('will-resize', (e, newBounds) => {
+		if(win.blurType !== "acrylic")
+			return;
+
+		const now = Date.now()
+		if(!win._resizeLastUpdate)
+			win._resizeLastUpdate = 0;
+
+		if(now >= win._resizeLastUpdate + (1000/pollingRate))
+			win._resizeLastUpdate = now;
+		else
+			e.preventDefault();
+	});
 }

@@ -61,10 +61,16 @@ module.exports = class DWM{
 	}
 
 	setAcrylic(tint = 0x00ffffff){
-		if(!this.constructor.isWindows10April18OrAbove()) return this.setBlurBehind(tint);
+		if(!this.supportsAcrylic()) return this.setBlurBehind(tint);
 		return this.setWindowCompositionAttribute(4, tint);
 	}
 
+	supportsAcrylic(){
+		return this.constructor.isWindows10April18OrAbove();
+	}
+
+	// I won't integrate the bottom static method into the top non-static one;
+	// always watch out for shit, it can probably be useful later on
 	static isWindows10April18OrAbove(){
 		if(process.platform !== "win32") return false;
 		const version = os.release().split(".").map(x => parseInt(x));

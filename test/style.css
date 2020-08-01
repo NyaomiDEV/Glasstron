@@ -1,26 +1,39 @@
 body {
-	background: #00000080;
 	margin: 0;
 }
 
 h1 {
 	font-family: sans-serif;
-	color: white;
-}
-
-p {
-	font-family: sans-serif;
-	color: white;
-}
-
-.hidden {
-	display: none;
 }
 
 .windowbar-maximize {
 	display: none;
 }
 
-.windowbar-title {
+.dark-bg {
+	background: #00000080;
+}
+
+.light-bg {
+	background: #ffffff80;
+}
+
+.dark {
 	color: white !important;
+}
+
+.light {
+	color: black !important;
+}
+
+p {
+	font-family: sans-serif;
+}
+
+.hidden {
+	display: none;
+}
+
+.windowbar {
+	margin-top: 5px;
 }
