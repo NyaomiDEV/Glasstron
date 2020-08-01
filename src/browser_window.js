@@ -16,7 +16,7 @@
 "use strict";
 
 const electron = require("electron");
-const Main = require("./main.js");
+const Utils = require("./utils.js");
 
 /*
  * The BrowserWindow override class
@@ -30,7 +30,7 @@ class BrowserWindow extends electron.BrowserWindow {
 		// We do not call super to get an actual BrowserWindow from electron and not mess with native casts (broke GTK modals)
 		const window = new electron.BrowserWindow(options);
 		BrowserWindow._bindAndReplace(window, BrowserWindow.setBackgroundColor);
-		Main.getInstance().init(window, options);
+		Utils.getPlatform().init(window, options);
 		if(typeof _backgroundColor !== "undefined")
 			window.webContents.on('dom-ready', () => window.setBackgroundColor(_backgroundColor));
 		if(typeof options.blur !== "undefined")

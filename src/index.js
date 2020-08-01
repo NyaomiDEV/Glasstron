@@ -17,8 +17,8 @@
 
 const electron = require("electron");
 const BrowserWindow = require("./browser_window.js");
-const Main = require("./main.js");
 const Hacks = require("./hacks.js");
+const Utils = require("./utils.js");
 
 const __module = findModule("__glasstron");
 if(typeof __module !== "undefined")
@@ -64,7 +64,7 @@ else{
 			return win.setBlur(bool);
 		},
 		getPlatform: function(){
-			return Main.getInstance().getCurrentPlatform();
+			return Utils.getPlatform();
 		}
 	};
 	module.__glasstron = true;
@@ -76,5 +76,4 @@ function findModule(prop){
 	}
 	return undefined;
 }
-
 

@@ -39,6 +39,18 @@ class Utils {
 	static isInPath(filename){
 		return fs.existsSync(path.resolve(Utils.getSavePath(), filename));
 	}
+	
+	static getPlatform(){
+		if(typeof this.platform === "undefined"){
+			try {
+				this.platform = require(`./platforms/${process.platform}.js`);
+			}catch(e){
+				console.error("It seems your platform is not supported by Glasstron!");
+				this.platform = require("./platforms/_platform.js"); // serves as dummy anyway
+			}
+		}
+		return this.platform;
+	}
 
 }
 

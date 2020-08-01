@@ -26,13 +26,12 @@ module.exports = class Win32 extends Platform {
 			this._defineDWM(win);
 		
 		if(typeof win.blurType === "undefined")
-			this._defineBlurType(win, _options.blurType);
+			this._defineBlurType(win, _options.blurType || null);
 		
 		super.init(win, _options);
 	}
 
 	static setBlur(win, bool){
-		this.init(win);
 		return Promise.resolve(this._apply(win, bool ? win.blurType : null));
 	}
 
