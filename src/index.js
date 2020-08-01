@@ -47,18 +47,22 @@ else{
 			
 			let bool = false;
 			if(values[mappings[process.platform]])
+				values = values[mappings[process.platform]]; // shorten
 				switch(process.platform){
 					case "win32":
-						bool = ["acrylic","transparent","blurbehind"].includes(values[mappings[process.platform]]);
-						win.blurType = values[mappings[process.platform]];
+						bool = ["acrylic","transparent","blurbehind"].includes(values.blurType);
+						win.blurType = values.blurType;
 						break;
 					case "darwin":
-						bool = values[mappings[process.platform]] !== "" && values[mappings[process.platform]] !== null;
-						win.vibrancy = values[mappings[process.platform]];
+						bool = values.vibrancy !== "" && values.vibrancy !== null;
+						win.vibrancy = values.vibrancy;
+						break;
+					case "linux":
+						bool = values.requestBlur;
 						break;
 					default:
-						bool = values[mappings[process.platform]];
-						break;
+						throw "Unsupported. Please use Glasstron.BrowserWindow instead of Glasstron.blur()";
+						return;
 				}
 			
 			return win.setBlur(bool);
