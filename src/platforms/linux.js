@@ -45,11 +45,10 @@ module.exports = class Linux extends Platform {
 
 	/**
 	 * This method returns us the current X window manager used
+	 * Note for Wayland: XWayland is X11 under Wayland: this'll work too
 	 */
 	static _getXWindowManager(){
-		if(process.env.XDG_SESSION_TYPE == "x11")
-			return x11.getXWindowManager();
-		return Promise.resolve(null);
+		return x11.getXWindowManager();
 	}
 
 	/**
