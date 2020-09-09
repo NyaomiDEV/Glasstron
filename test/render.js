@@ -63,3 +63,13 @@ if(process.platform === "win32"){
 
 	document.getElementById("win32").classList.remove("hidden");
 }
+
+if(process.platform == "linux"){
+	electron.ipcRenderer.send("wmQuery");
+	
+	electron.ipcRenderer.on("wmString", (e, res) => {
+		const linp = document.getElementById("linux-wm");
+		linp.innerHTML = "Current window manager: " + res;
+		linp.classList.remove("hidden");
+	});
+}

@@ -71,6 +71,11 @@ function spawnWindow(){
 		win.minimize();
 	});
 
+	electron.ipcMain.on("wmQuery", async (e) => {
+		if(process.platform !== "linux") return;
+		e.sender.send("wmString", await glasstron.getPlatform()._getXWindowManager());
+	});
+
 	return win;
 }
 
