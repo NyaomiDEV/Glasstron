@@ -21,7 +21,7 @@ const electron = require("electron");
 
 const savepath = path.join(electron.app.getPath("appData"), "glasstron");
 
-class Utils {
+module.exports = class Utils {
 
 	static getSavePath(){
 		return savepath;
@@ -51,7 +51,23 @@ class Utils {
 		}
 		return this.platform;
 	}
+	
+	static parseKeyValString(string, keyvalSeparator = "=", pairSeparator = ":"){
+		let obj = {};
+		for(let pair of string.split(pairSeparator)){
+			const val = pair.split(keyvalSeparator);
+			const key = val.shift();
+			obj[key] = val.join(keyvalSeparator);
+		}
+		return obj;
+	}
+	
+	static makeKeyValString(object, keyvalSeparator = "=", pairSeparator = ":"){
+		let strArr = [];
+		for(let key in object){
+			strArr.push(key + keyvalSeparator + object[key]);
+		}
+		return strArr.join(pairSeparator);
+	}
 
 }
-
-module.exports = Utils;
