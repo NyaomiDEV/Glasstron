@@ -17,7 +17,7 @@
 
 module.exports = class X11Encode {
 
-	static encodeFromTypeName(typeName, data, null_terminated = false){
+	static encodeFromTypeName(typeName, data){
 		switch(typeName){
 			default:
 				throw new Error("Unsupported type " + typeName);
@@ -28,7 +28,7 @@ module.exports = class X11Encode {
 			case "INTEGER":
 				return this.encodeNumbers(data);
 			case "UTF8_STRING":
-				return this.encodeUTF8String(data, null_terminated);
+				return this.encodeUTF8String(data);
 			case "WM_STATE":
 				return this.encodeWmState(data);
 		}
@@ -45,14 +45,14 @@ module.exports = class X11Encode {
 		return result;
 	}
 
-	static encodeUTF8String(data, null_terminated = false){
+	static encodeUTF8String(data){
 		let _data = [];
 		let length = 0;
 		data.forEach(function(element, index) {
 			_data.push(Buffer.from(element));
 			length += el.length;
 			if ((index !== data.length - 1) || null_terminated) {
-				_data.push = Buffer.from([0]);
+				_data.push(Buffer.from([0]));
 				++length;
 			}
 		});
