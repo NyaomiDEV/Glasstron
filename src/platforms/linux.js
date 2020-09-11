@@ -131,10 +131,16 @@ module.exports = class Linux extends Platform {
 			win.getNativeWindowHandle().readUInt32LE(),
 			"_MUTTER_HINTS"
 		);
-		if(typeof value === "undefined")
-			return {};
-		
-		return Utils.parseKeyValString(value);
+		let obj = {};
+		if (Array.isArray(value)) {
+			value.forEach(item =>{
+				let keyval = Utils.parseKeyValString(item)
+				obj[Object.keys(keyval)[0]] = Object.values(keyval)[0];
+			})
+		} else if (typeof value === "string") {
+			obj = Utils.parseKeyValString(value);
+		} // else return {}
+		return obj;
 	}
 	
 	static async _mutter_setHints(win, hints){
