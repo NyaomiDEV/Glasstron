@@ -45,7 +45,7 @@ module.exports = class X11Encode {
 		return result;
 	}
 
-	static encodeUTF8String(data){
+	static encodeUTF8String(data, null_terminated = false){
 		let _data = [];
 		let length = 0;
 		data.forEach(function(element, index) {
