@@ -118,16 +118,20 @@ module.exports = class Linux extends Platform {
 			if(hints[i]["blur-provider"])
 				index = i;
 		
-		if(index == -1 && sigma != 0)
-			hints.push({"blur-provider": sigma.toString()});
-		else
+		if(index == -1){
+			if(sigma != 0)
+				hints.push({"blur-provider": sigma.toString()});
+		}else{
 			if(sigma != 0)
 				hints[index]["blur-provider"] = sigma.toString();
 			else{
 				delete hints[index]["blur-provider"];
-				if(Object.keys(hints[index]).length == 0)
+				if(Object.keys(hints[index]).length == 0){
 					delete hints[index];
+					hints = hints.filter(x => typeof x != "undefined");
+				}
 			}
+		}
 
 		return this._mutter_setHints(win, hints);
 	}
