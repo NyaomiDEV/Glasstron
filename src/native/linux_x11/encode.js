@@ -50,7 +50,7 @@ module.exports = class X11Encode {
 		let length = 0;
 		data.forEach(function(element, index) {
 			_data.push(Buffer.from(element));
-			length += el.length;
+			length += element.length;
 			if ((index !== data.length - 1) || null_terminated) {
 				_data.push(Buffer.from([0]));
 				++length;

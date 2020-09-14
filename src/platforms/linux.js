@@ -20,9 +20,6 @@ const Utils = require("../utils.js");
 
 const x11 = require("../native/linux_x11/linux_x11.js");
 
-// CorvetteCole's Blur Provider extension -- constants
-const sigmaKey = "blur-provider";
-
 module.exports = class Linux extends Platform {
 
 	static async setBlur(win, bool){
@@ -114,7 +111,7 @@ module.exports = class Linux extends Platform {
 
 	static async _blurProvider_setSigma(win, sigma){
 		sigma = Math.min(111, Math.max(0, sigma));
-		const hints = await this._mutter_getHints(win);
+		let hints = await this._mutter_getHints(win);
 		
 		let index = -1;
 		for(let i in hints)
