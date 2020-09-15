@@ -21,18 +21,14 @@ module.exports = class Darwin extends Platform {
 
 	static init(win, _options){
 		this._wrapVibrancy(win, _options.vibrancy || null);
-		
-		Object.defineProperty(win, "setBlur", {
-			get: () => (blur) => this.setBlur(win, blur)
-		});
 	}
 
 	static setBlur(win, bool){
-		return Promise.resolve(win.setVibrancy(bool ? win.vibrancy : null));
+		return win.setBlur(bool);
 	}
 
 	static getBlur(win){
-		return Promise.resolve(win.getVibrancy() === null);
+		return win.getBlur();
 	}
 
 	/**
@@ -55,7 +51,7 @@ module.exports = class Darwin extends Platform {
 		
 		// Here we define the actual win.vibrancy variable
 		Object.defineProperty(win, "vibrancy", {
-			get: () => _vibrancy,
+			get: () => _vibrancy[0],
 			set: async (_newVibrancy) => {
 				// Yeet any undefined value
 				if(typeof _newVibrancy === "undefined")
@@ -92,6 +88,15 @@ module.exports = class Darwin extends Platform {
 		// Now we need an exposed method to get the correct blur status
 		Object.defineProperty(win, "getBlur", {
 			get: () => _vibrancy[1] === null
+		});
+		
+		// And a correct method to set the blur status
+		Object.defineProperty(win, "setBlur", {
+			get: () => (bool) => {
+				if(bool)
+					_vibrancy[1] = _vibrancy[0]; // maybe there's a better way to do this
+				win.setVibrancy(bool ? win.vibrancy : null);
+			}
 		});
 	}
 }
