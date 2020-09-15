@@ -36,7 +36,7 @@ module.exports = class Linux extends Platform {
 				break;
 			case "GNOME Shell":
 				// the line of code below makes sense actually, I swear
-				return this._blurProvider_setSigma(bool ? win.blurGnomeSigma : 0);
+				return this._blurProvider_setSigma(win, bool ? win.blurGnomeSigma : 0);
 				break;
 			default:
 				break;
