@@ -77,6 +77,7 @@ if(process.platform == "linux"){
 			gnomeSlider.oninput = function(){
 				electron.ipcRenderer.send("gnomeSigma", gnomeSlider.value);
 			}
+			gnomeSlider.classList.remove("hidden");
 		}
 	});
 }
