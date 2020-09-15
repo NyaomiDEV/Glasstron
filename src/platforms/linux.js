@@ -157,7 +157,7 @@ module.exports = class Linux extends Platform {
 
 				_blurGnomeSigma = _sigma;
 				const _currentSigma = await this._blurProvider_getSigma(win);
-				if(typeof _currentSigma !== "undefined" || _currentSigma !== 0){
+				if(typeof _currentSigma !== "undefined" && _currentSigma !== 0){
 					this._blurProvider_setSigma(win, _sigma); // pass to x11
 				}
 			}
