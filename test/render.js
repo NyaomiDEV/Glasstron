@@ -75,7 +75,7 @@ if(process.platform == "linux"){
 		if(res === "GNOME Shell"){
 			const gnomeSlider = document.getElementById("gnomeSlider");
 			gnomeSlider.oninput = function(){
-				electron.ipcRenderer.send("gnomeSigma", gnomeSlider.value);
+				electron.ipcRenderer.send("gnomeSigma", parseInt(gnomeSlider.value));
 			}
 			gnomeSlider.classList.remove("hidden");
 		}
