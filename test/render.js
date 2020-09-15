@@ -71,5 +71,12 @@ if(process.platform == "linux"){
 		const linp = document.getElementById("linux-wm");
 		linp.innerHTML = "Current window manager: " + res;
 		linp.classList.remove("hidden");
+		
+		if(res === "GNOME Shell"){
+			const gnomeSlider = document.getElementById("gnomeSlider");
+			gnomeSlider.oninput = function(){
+				electron.ipcRenderer.send("gnomeSigma", gnomeSlider.value);
+			}
+		}
 	});
 }

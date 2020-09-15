@@ -22,6 +22,12 @@ const x11 = require("../native/linux_x11/linux_x11.js");
 
 module.exports = class Linux extends Platform {
 
+	static init(win, _options){
+		this._blurProvider_init(win, _options.blurGnomeSigma);
+
+		super.init(win, _options);
+	}
+
 	static async setBlur(win, bool){
 		const wm = await Linux._getXWindowManager();
 		switch(wm){
@@ -29,7 +35,8 @@ module.exports = class Linux extends Platform {
 				return this._kwin_setBlur(win, bool);
 				break;
 			case "GNOME Shell":
-				return this._blurProvider_setSigma(win, bool ? 100 : 0); // TODO: find a suitable sigma
+				// the line of code below makes sense actually, I swear
+				return this._blurProvider_setSigma(bool ? win.blurGnomeSigma : 0);
 				break;
 			default:
 				break;
@@ -101,16 +108,7 @@ module.exports = class Linux extends Platform {
 		return false;
 	}
 
-	static async _blurProvider_getSigma(win){
-		const hints = await this._mutter_getHints(win);
-		for(let i in hints)
-			if(hints[i]["blur-provider"])
-				return parseInt(hints[i]["blur-provider"]);
-		return undefined;
-	}
-
 	static async _blurProvider_setSigma(win, sigma){
-		sigma = Math.min(111, Math.max(0, sigma));
 		let hints = await this._mutter_getHints(win);
 		
 		let index = -1;
@@ -134,6 +132,36 @@ module.exports = class Linux extends Platform {
 		}
 
 		return this._mutter_setHints(win, hints);
+	}
+
+	static async _blurProvider_getSigma(win){
+		const hints = await this._mutter_getHints(win);
+		for(let i in hints)
+			if(hints[i]["blur-provider"])
+				return parseInt(hints[i]["blur-provider"]);
+			return undefined;
+	}
+
+	static _blurProvider_init(win, _initialSigma = 100){
+		let _blurGnomeSigma = (_initialSigma === 0 ? 100 : _initialSigma);
+
+		Object.defineProperty(win, "blurGnomeSigma", {
+			get: () => _blurGnomeSigma, // always return the "displayed" sigma
+			set: async (_sigma) => {
+				_sigma = Math.min(111, Math.max(0, _sigma)); // clamp sigma so 0 <= sigma <= 111
+
+				if(_sigma === 0){ // do not set win.blurGnomeSigma to 0, EVER
+					this._blurProvider_setSigma(win, 0);
+					return;
+				}
+
+				_blurGnomeSigma = _sigma;
+				const _currentSigma = await this._blurProvider_getSigma(win);
+				if(typeof _currentSigma !== "undefined" || _currentSigma !== 0){
+					this._blurProvider_setSigma(win, _sigma); // pass to x11
+				}
+			}
+		});
 	}
 
 	/**

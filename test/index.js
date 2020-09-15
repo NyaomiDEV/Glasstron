@@ -25,6 +25,7 @@ function spawnWindow(){
 		show: true,
 		blur: true,
 		blurType: "blurbehind",
+		blurGnomeSigma: 100,
 		vibrancy: "fullscreen-ui",
 		webPreferences: {
 			nodeIntegration: true
@@ -75,6 +76,12 @@ function spawnWindow(){
 		if(process.platform !== "linux") return;
 		e.sender.send("wmString", await glasstron.getPlatform()._getXWindowManager());
 	});
+
+	electron.ipcMain.on("gnomeSigma", async (e, res) => {
+		if(process.platform !== "linux") return;
+		if(await glasstron.getPlatform()._getXWindowManager() !== "GNOME Shell") return;
+		win.blurGnomeSigma = res;
+	})
 
 	return win;
 }
