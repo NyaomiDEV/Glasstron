@@ -73,13 +73,15 @@ Do you know how to fix stuff? Make a pull request!
 Or perhaps you want to send me a hug and a coffee? You can do so [here](https://ko-fi.com/arytonex)!
 
 ## Awesome applications using Glasstron
-- [Glasscord](https://github.com/AryToNeX/Glasscord)
 - [Android Messages](https://github.com/katacarbix/android-messages) by katacarbix
 - [Terminus](https://github.com/Eugeny/terminus) by Eugeny
-- [Dot Browser](https://github.com/dothq/browser) by Dot HQ
 - [Soundglass](https://github.com/pixldev/soundglass) by pixldev
 - [Lightcord](https://github.com/Lightcord/Lightcord) by Lightcord
 - Want yours featured? Issue a PR!
+
+## Projects related to Glasstron
+- [Glasscord](https://github.com/AryToNeX/Glasscord) uses Glasstron to inject composition in any* Electron app.
+- [blur-provider](https://github.com/CorvetteCole/blur-provider) is used by Glasstron to request blurring of windows to the GNOME Shell.
 
 ## License
 ### Glasstron is licensed under the Apache 2.0 License
