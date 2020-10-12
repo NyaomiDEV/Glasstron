@@ -2,11 +2,13 @@
 
 A simple and reliable API to achieve blur and transparency across platforms (Windows/Linux/MacOS), so you don't have to panic with Electron bugs and messy code! Plus, it's really simple!
 
-[![ko-fi](https://www.ko-fi.com/img/donate_sm.png)](https://ko-fi.com/K3K3D0E0)
-
-[![patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://patreon.com/arytonex)
-
-[![Chat on Discord](https://discordapp.com/api/guilds/696696149301657640/embed.png)](https://discord.gg/SftnByN)
+[![npm](https://img.shields.io/npm/dt/glasstron?logo=npm&style=for-the-badge)](https://www.npmjs.com/package/glasstron)
+[![version](https://img.shields.io/npm/v/glasstron?label=version&style=for-the-badge)](https://www.npmjs.com/package/glasstron)
+[![indev version](https://img.shields.io/github/package-json/v/arytonex/glasstron?label=indev%20version&style=for-the-badge)](https://github.com/AryToNeX/Glasstron/tree/master)
+[![ko-fi](https://img.shields.io/badge/donate-on%20ko--fi-29ABE0?logo=ko-fi&style=for-the-badge&logoColor=FFFFFF)](https://ko-fi.com/K3K3D0E0)
+[![patreon](https://img.shields.io/badge/pledge-on%20patreon-FF424D?logo=patreon&style=for-the-badge&logoColor=FFFFFF)](https://patreon.com/arytonex)
+[![paypal](https://img.shields.io/badge/donate-on%20paypal-0079CD?logo=paypal&style=for-the-badge)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y7ZAFZ2H56FD4)
+[![discord](https://img.shields.io/discord/696696149301657640?color=7289DA&label=chat&logo=discord&logoColor=ffffff&style=for-the-badge)](https://discord.gg/SftnByN)
 
 ## Quickstart
 ```bash
