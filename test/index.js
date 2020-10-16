@@ -26,6 +26,7 @@ function spawnWindow(){
 		blur: true,
 		blurType: "blurbehind",
 		blurGnomeSigma: 100,
+		blurCornerRadius: 20,
 		vibrancy: "fullscreen-ui",
 		webPreferences: {
 			nodeIntegration: true

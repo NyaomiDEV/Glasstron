@@ -1,7 +1,7 @@
 const electron = require("electron");
 
 document.documentElement.classList.add("dark");
-document.body.classList.add("dark-bg");
+document.getElementById("__container").classList.add("dark-bg");
 
 const wb = new (require('windowbar'))(
 	{
@@ -26,17 +26,17 @@ electron.ipcRenderer.on("blurStatus", (e, res) => {
 electron.ipcRenderer.on("darkTheme", (e, isDark) => {
 	if(isDark){
 		document.documentElement.classList.remove("light");
-		document.body.classList.remove("light-bg");
+		document.getElementById("__container").classList.remove("light-bg");
 		document.getElementsByClassName("windowbar-title")[0].classList.remove("light");
 		document.documentElement.classList.add("dark");
-		document.body.classList.add("dark-bg");
+		document.getElementById("__container").classList.add("dark-bg");
 		document.getElementsByClassName("windowbar-title")[0].classList.add("dark");
 	}else{
 		document.documentElement.classList.remove("dark");
-		document.body.classList.add("dark-bg");
+		document.getElementById("__container").classList.add("dark-bg");
 		document.getElementsByClassName("windowbar-title")[0].classList.add("dark");
 		document.documentElement.classList.add("light");
-		document.body.classList.add("light-bg");
+		document.getElementById("__container").classList.add("light-bg");
 		document.getElementsByClassName("windowbar-title")[0].classList.add("light");
 	}
 });

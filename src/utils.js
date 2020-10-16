@@ -45,7 +45,7 @@ module.exports = class Utils {
 			try {
 				this.platform = require(`./platforms/${process.platform}.js`);
 			}catch(e){
-				console.error("It seems your platform is not supported by Glasstron!");
+				console.error("It seems your platform is not supported by Glasstron!", e);
 				this.platform = require("./platforms/_platform.js"); // serves as dummy anyway
 			}
 		}
@@ -70,4 +70,16 @@ module.exports = class Utils {
 		return strArr.join(pairSeparator);
 	}
 
+	static getRegions(width, height, radius){
+		const f = (x) => x === 1 ? 0 : 1 - Math.sqrt(1 - (x - 1)**2);
+		const regions = [
+			[radius, 0, width - (radius * 2), height]
+		];
+		for(let i = 0; i < radius; i++){
+			const pad = Math.round(f(i / radius) * radius) + 1;
+			regions.push([i, pad, 1, height - (pad * 2)]);
+			regions.push([width - i - 1, pad, 1, height - (pad * 2)]);
+		}
+		return regions;
+	}
 }

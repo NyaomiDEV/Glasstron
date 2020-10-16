@@ -24,8 +24,25 @@ module.exports = class Linux extends Platform {
 
 	static init(win, _options){
 		this._blurProvider_init(win, _options.blurGnomeSigma);
+		
+		// Handle this here (for KWin)
+		if(typeof _options.blurCornerRadius !== "undefined")
+			win.blurCornerRadius = _options.blurCornerRadius;
 
+		this.asyncInit(win, _options);
 		super.init(win, _options);
+	}
+	
+	static async asyncInit(win, _options){
+		const wm = await Linux._getXWindowManager();
+		switch(wm){
+			case "KWin":
+				// Update the kwin blur property
+				const updateKWin = async () => this._kwin_setBlur(win, await this._kwin_getBlur(win));
+				win.on("will-resize", updateKWin);
+				win.on("resize", updateKWin);
+				break;
+		}
 	}
 
 	static async setBlur(win, bool){
@@ -79,7 +96,7 @@ module.exports = class Linux extends Platform {
 				"_KDE_NET_WM_BLUR_BEHIND_REGION",
 				"CARDINAL",
 				32,
-				[0]
+				win.blurCornerRadius !== 0 ? Utils.getRegions(win.getSize()[0], win.getSize()[1], win.blurCornerRadius).flat() : [0]
 			);
 		return x11.deleteXProperty(
 			win.getNativeWindowHandle().readUInt32LE(),
