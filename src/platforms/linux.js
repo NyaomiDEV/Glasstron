@@ -38,7 +38,7 @@ module.exports = class Linux extends Platform {
 		switch(wm){
 			case "KWin":
 				// Update the kwin blur property
-				const updateKWin = async () => this._kwin_setBlur(win, await this._kwin_getBlur(win));
+				const updateKWin = async () => {if(win.blurCornerRadius !== 0) this._kwin_setBlur(win, await this._kwin_getBlur(win))};
 				win.on("will-resize", updateKWin);
 				win.on("resize", updateKWin);
 				break;
