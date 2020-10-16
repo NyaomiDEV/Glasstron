@@ -24,10 +24,7 @@ module.exports = class Linux extends Platform {
 
 	static init(win, _options){
 		this._blurProvider_init(win, _options.blurGnomeSigma);
-		
-		// Handle this here (for KWin)
-		if(typeof _options.blurCornerRadius !== "undefined")
-			win.blurCornerRadius = _options.blurCornerRadius;
+		this._kwin_init(win, _options);
 
 		this.asyncInit(win, _options);
 		super.init(win, _options);
@@ -112,6 +109,17 @@ module.exports = class Linux extends Platform {
 		if(typeof value !== "undefined")
 			return true;
 		return false;
+	}
+	
+	static _kwin_init(win, _options){
+		let blurCornerRadius = _options.blurCornerRadius || 0;
+		Object.defineProperty(win, "blurCornerRadius", {
+			get: () => blurCornerRadius,
+			set: async (_radius) => {
+				blurCornerRadius = _radius;
+				this._kwin_setBlur(win, await this._kwin_getBlur(win));
+			}
+		})
 	}
 
 	/**
