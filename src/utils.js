@@ -76,7 +76,7 @@ module.exports = class Utils {
 			[radius, 0, width - (radius * 2), height]
 		];
 		for(let i = 0; i < radius; i++){
-			const pad = Math.round(f(i / radius) * radius) + 1;
+			const pad = Math.round(f(i / radius) * radius);
 			regions.push([i, pad, 1, height - (pad * 2)]);
 			regions.push([width - i - 1, pad, 1, height - (pad * 2)]);
 		}
