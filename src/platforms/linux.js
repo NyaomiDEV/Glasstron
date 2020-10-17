@@ -93,7 +93,7 @@ module.exports = class Linux extends Platform {
 				"_KDE_NET_WM_BLUR_BEHIND_REGION",
 				"CARDINAL",
 				32,
-				win.blurCornerRadius !== 0 ? Utils.getRegions(win.getSize()[0], win.getSize()[1], win.blurCornerRadius).flat() : [0]
+				win.blurCornerRadius !== 0 ? Utils.getRegions(0, 0, win.getSize()[0], win.getSize()[1], win.blurCornerRadius).flat() : [0]
 			);
 		return x11.deleteXProperty(
 			win.getNativeWindowHandle().readUInt32LE(),
