@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/AryToNeX/Glasstron#readme",
   "devDependencies": {
-    "electron": "~9",
+    "electron": "~10",
     "windowbar": "^1.7.3"
   },
   "dependencies": {
