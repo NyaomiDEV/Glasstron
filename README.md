@@ -13,6 +13,8 @@ A simple and reliable API to achieve blur and transparency across platforms (Win
 ## Quickstart
 ```bash
 $ npm install glasstron
+- OR -
+$ yarn add glasstron
 ```
 ```js
 const glasstron = require('glasstron');
