@@ -22,18 +22,18 @@ module.exports = class X11Promisify {
 	static getPropertyData(id, prop){
 		return new Promise((resolve) => {
 			x11.createClient((err, display) => {
-					let X = display.client;
-					if(typeof id === "undefined")
-						id = display.screen[0].root;
+				let X = display.client;
+				if(typeof id === "undefined")
+					id = display.screen[0].root;
 
-					X.GetProperty(0, id, prop, 0, 0, 10000000, (err, propData) => {
-						X.GetAtomName(propData.type, (err, typeName) => {
-							propData.typeName = typeName;
-							X.close();
-							resolve(propData);
-						});
+				X.GetProperty(0, id, prop, 0, 0, 10000000, (err, propData) => {
+					X.GetAtomName(propData.type, (err, typeName) => {
+						propData.typeName = typeName;
+						X.close();
+						resolve(propData);
 					});
-			}).on("error", (error) => {
+				});
+			}).on("error", () => {
 				resolve({
 					type: undefined,
 					bytesAfter: undefined,
@@ -46,7 +46,7 @@ module.exports = class X11Promisify {
 
 	static setPropertyData(id, prop, type, format, data){
 		return new Promise((resolve) => {
-			x11.createClient(function(err, display) {
+			x11.createClient((err, display) => {
 				let X = display.client;
 				if(typeof id === "undefined")
 					id = display.screen[0].root;
@@ -84,4 +84,4 @@ module.exports = class X11Promisify {
 		});
 	}
 
-}
+};

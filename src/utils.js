@@ -64,9 +64,9 @@ module.exports = class Utils {
 	
 	static makeKeyValString(object, keyvalSeparator = "=", pairSeparator = ":"){
 		let strArr = [];
-		for(let key in object){
+		for(let key in object)
 			strArr.push(key + keyvalSeparator + object[key]);
-		}
+		
 		return strArr.join(pairSeparator);
 	}
 
@@ -82,4 +82,4 @@ module.exports = class Utils {
 		}
 		return regions;
 	}
-}
+};

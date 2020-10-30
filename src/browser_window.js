@@ -32,7 +32,7 @@ class BrowserWindow extends electron.BrowserWindow {
 		BrowserWindow._bindAndReplace(window, BrowserWindow.setBackgroundColor);
 		Utils.getPlatform().init(window, options);
 		if(typeof _backgroundColor !== "undefined")
-			window.webContents.on('dom-ready', () => window.setBackgroundColor(_backgroundColor));
+			window.webContents.on("dom-ready", () => window.setBackgroundColor(_backgroundColor));
 		if(typeof options.blur !== "undefined")
 			window.setBlur(options.blur);
 		return window;
@@ -44,13 +44,13 @@ class BrowserWindow extends electron.BrowserWindow {
 		// Color transform from ARGB to RGBA
 		color = [...color.replace("#", "")];
 		if(color.length % 4 === 0)
-			for (let i = 0; i < color.length / 4; i++)
-				color.push(color.shift());
+		{for (let i = 0; i < color.length / 4; i++)
+			color.push(color.shift());}
 		color = color.join("");
 		// CSS insertion
 		const callback = () => {
 			return this.webContents.insertCSS(`:root{ background-color: #${color} !important; }`).then(key => { this._bgCssKey = key; });
-		}
+		};
 		if(typeof this._bgCssKey !== "undefined") return this.webContents.removeInsertedCSS(this._bgCssKey).then(callback);
 		else return callback();
 	}

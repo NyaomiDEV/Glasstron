@@ -40,7 +40,7 @@ class Hacks {
 	static delayReadyEvent(){ // from Zack, blame Electron
 		console.debug("Delaying the 'ready' event via the Glasstron Hacks class is not recommended! Please take care of it yourself!");
 		const originalEmit = electron.app.emit;
-		electron.app.emit = function(event, ...args){
+		electron.app.emit = (event, ...args) => {
 			if(event !== "ready") return Reflect.apply(originalEmit, this, arguments);
 			setTimeout(() => {
 				electron.app.emit = originalEmit;

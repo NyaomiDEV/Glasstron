@@ -15,6 +15,8 @@
 */
 "use strict";
 
+/* eslint-disable no-unused-vars */
+
 module.exports = class Platform{
 
 	// override this or just use it idk
@@ -31,4 +33,4 @@ module.exports = class Platform{
 
 	static getBlur(win){}
 
-}
+};

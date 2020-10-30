@@ -51,4 +51,4 @@ module.exports = class LinuxX11 {
 		return x11.deleteProperty(xid, prop);
 	}
 
-}
+};

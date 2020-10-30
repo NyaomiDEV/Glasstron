@@ -21,7 +21,6 @@ module.exports = class X11Decode {
 		switch(typeName){
 			default:
 				throw new Error("Unsupported type " + typeName);
-				break;
 			case "WINDOW":
 			case "CARDINAL":
 			case "ATOM":
@@ -36,9 +35,9 @@ module.exports = class X11Decode {
 	
 	static decodeNumbers(buffer){
 		let result = [];
-		for (let i = 0; i < buffer.length; i += 4){
+		for (let i = 0; i < buffer.length; i += 4)
 			result.push(buffer.readUInt32LE(i));
-		}
+		
 		return result;
 	}
 
@@ -51,19 +50,19 @@ module.exports = class X11Decode {
 				init = i + 1;
 			}
 		}
-		if (init < buffer.length) {
+		if (init < buffer.length) 
 			result.push(buffer.toString("utf8", init));
-		}
+		
 		return result;
 	}
 	
 	static decodeWmState(buffer){
-		if (data.length !== 8)
-			throw new Error('WTF IS THIS WM STATE?');
+		if (buffer.length !== 8)
+			throw new Error("WTF IS THIS WM STATE?");
 		return {
-			state: data.readUInt32LE(0),
-			icon: data.readUInt32LE(4)
+			state: buffer.readUInt32LE(0),
+			icon: buffer.readUInt32LE(4)
 		};
 	}
 
-}
+};

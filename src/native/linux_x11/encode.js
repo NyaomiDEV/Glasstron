@@ -21,7 +21,6 @@ module.exports = class X11Encode {
 		switch(typeName){
 			default:
 				throw new Error("Unsupported type " + typeName);
-				break;
 			case "WINDOW":
 			case "CARDINAL":
 			case "ATOM":
@@ -38,7 +37,7 @@ module.exports = class X11Encode {
 		let result = [];
 		if (data.length > 0) {
 			result = Buffer.alloc(4 * data.length);
-			data.forEach(function(element, index) {
+			data.forEach((element, index) => {
 				result.writeUInt32LE(element, 4 * index);
 			});
 		}
@@ -48,7 +47,7 @@ module.exports = class X11Encode {
 	static encodeUTF8String(data, null_terminated = false){
 		let _data = [];
 		let length = 0;
-		data.forEach(function(element, index) {
+		data.forEach((element, index) => {
 			_data.push(Buffer.from(element));
 			length += element.length;
 			if ((index !== data.length - 1) || null_terminated) {
@@ -60,7 +59,7 @@ module.exports = class X11Encode {
 	}
 
 	static encodeWmState(data){
-		result = Buffer.alloc(8);
+		let result = Buffer.alloc(8);
 		result.writeUInt32LE(data.state, 0);
 		if (!data.icon)
 			data.icon = 0;
@@ -68,4 +67,4 @@ module.exports = class X11Encode {
 		return result;
 	}
 
-}
+};

@@ -2,13 +2,11 @@
 
 const glasstron = require("..");
 const electron = require("electron");
-const path = require("path");
-
 electron.app.commandLine.appendSwitch("enable-transparent-visuals");
 electron.app.on("ready", () => {
 	setTimeout(
 		spawnWindow,
-		process.platform == "linux" ? 1000 : 0
+		process.platform === "linux" ? 1000 : 0
 	);
 	electron.nativeTheme.on("updated", checkDarkTheme);
 });
@@ -37,7 +35,7 @@ function spawnWindow(){
 	
 	if(process.platform === "win32"){
 		electron.ipcMain.on("blurTypeChange", (e, value) => {
-		const win = electron.BrowserWindow.fromWebContents(e.sender);
+			const win = electron.BrowserWindow.fromWebContents(e.sender);
 			if(win !== null){
 				win.blurType = value;
 				e.sender.send("blurTypeChanged", win.blurType);
@@ -60,12 +58,12 @@ function spawnWindow(){
 		}
 	});
 	
-	electron.ipcMain.on("blurQuery", async (e, value) => {
+	electron.ipcMain.on("blurQuery", async (e) => {
 		e.sender.send("blurStatus", await win.getBlur());
 	});
 	
 	electron.ipcMain.on("close", () => {
-		electron.app.quit()
+		electron.app.quit();
 	});
 
 	electron.ipcMain.on("minimize", (e) => {
@@ -82,7 +80,7 @@ function spawnWindow(){
 		if(process.platform !== "linux") return;
 		if(await glasstron.getPlatform()._getXWindowManager() !== "GNOME Shell") return;
 		win.blurGnomeSigma = res;
-	})
+	});
 
 	return win;
 }
@@ -95,7 +93,7 @@ function checkDarkTheme(){
 
 function acrylicWorkaround(win, pollingRate = 60){
 	// Replace window moving behavior to fix mouse polling rate bug
-	win.on('will-move', (e) => {
+	win.on("will-move", (e) => {
 		if(win.blurType !== "acrylic")
 			return;
 		
@@ -143,11 +141,11 @@ function acrylicWorkaround(win, pollingRate = 60){
 	});
 
 	// Replace window resizing behavior to fix mouse polling rate bug
-	win.on('will-resize', (e, newBounds) => {
+	win.on("will-resize", (e) => {
 		if(win.blurType !== "acrylic")
 			return;
 
-		const now = Date.now()
+		const now = Date.now();
 		if(!win._resizeLastUpdate)
 			win._resizeLastUpdate = 0;
 

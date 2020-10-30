@@ -15,7 +15,6 @@
 */
 "use strict";
 
-const electron = require("electron");
 const BrowserWindow = require("./browser_window.js");
 const Hacks = require("./hacks.js");
 const Utils = require("./utils.js");
@@ -48,22 +47,21 @@ else{
 			let bool = false;
 			if(values[mappings[process.platform]])
 				values = values[mappings[process.platform]]; // shorten
-				switch(process.platform){
-					case "win32":
-						bool = ["acrylic","transparent","blurbehind"].includes(values.blurType);
-						win.blurType = values.blurType;
-						break;
-					case "darwin":
-						bool = values.vibrancy !== "" && values.vibrancy !== null;
-						win.vibrancy = values.vibrancy;
-						break;
-					case "linux":
-						bool = values.requestBlur;
-						break;
-					default:
-						throw "Unsupported. Please use Glasstron.BrowserWindow instead of Glasstron.blur()";
-						return;
-				}
+			switch(process.platform){
+				case "win32":
+					bool = ["acrylic","transparent","blurbehind"].includes(values.blurType);
+					win.blurType = values.blurType;
+					break;
+				case "darwin":
+					bool = values.vibrancy !== "" && values.vibrancy !== null;
+					win.vibrancy = values.vibrancy;
+					break;
+				case "linux":
+					bool = values.requestBlur;
+					break;
+				default:
+					throw "Unsupported. Please use Glasstron.BrowserWindow instead of Glasstron.blur()";
+			}
 			
 			return win.setBlur(bool);
 		},
@@ -75,9 +73,9 @@ else{
 }
 
 function findModule(prop){
-	for(let module in require.cache){
+	for(let module in require.cache)
 		if(typeof require.cache[module][prop] !== "undefined") return require.cache[module];
-	}
+	
 	return undefined;
 }
 

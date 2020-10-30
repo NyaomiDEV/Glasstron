@@ -1,16 +1,19 @@
+/* eslint-disable no-undef */
+"use strict";
+
 const electron = require("electron");
 
 document.documentElement.classList.add("dark");
 document.getElementById("__container").classList.add("dark-bg");
 
-const wb = new (require('windowbar'))(
+new (require("windowbar"))(
 	{
-		style: 'mac',
+		style: "mac",
 		title: "Glasstron",
 		transparent: true
 	})
-	.on('close', () => electron.ipcRenderer.send("close"))
-	.on('minimize', () => electron.ipcRenderer.send("minimize"))
+	.on("close", () => electron.ipcRenderer.send("close"))
+	.on("minimize", () => electron.ipcRenderer.send("minimize"))
 	.appendTo(document.getElementById("windowbar"));
 
 document.getElementsByClassName("windowbar-title")[0].classList.add("dark");
@@ -41,14 +44,14 @@ electron.ipcRenderer.on("darkTheme", (e, isDark) => {
 	}
 });
 
-document.getElementById("toggle").onclick = function(){
+document.getElementById("toggle").onclick = () => {
 	electron.ipcRenderer.send("blurToggle", !toggled);
 };
 
 if(process.platform === "win32"){
-	document.getElementById("win32-select").onchange = function(){
+	document.getElementById("win32-select").onchange = () => {
 		electron.ipcRenderer.send("blurTypeChange", document.getElementById("win32-select").value);
-	}
+	};
 
 	electron.ipcRenderer.on("supportsAcrylic", () => {
 		const acrylic = document.createElement("option");
@@ -64,7 +67,7 @@ if(process.platform === "win32"){
 	document.getElementById("win32").classList.remove("hidden");
 }
 
-if(process.platform == "linux"){
+if(process.platform === "linux"){
 	electron.ipcRenderer.send("wmQuery");
 	
 	electron.ipcRenderer.on("wmString", (e, res) => {
@@ -74,9 +77,9 @@ if(process.platform == "linux"){
 		
 		if(res === "GNOME Shell"){
 			const gnomeSlider = document.getElementById("gnomeSlider");
-			gnomeSlider.oninput = function(){
+			gnomeSlider.oninput = () => {
 				electron.ipcRenderer.send("gnomeSigma", parseInt(gnomeSlider.value));
-			}
+			};
 			gnomeSlider.classList.remove("hidden");
 		}
 	});

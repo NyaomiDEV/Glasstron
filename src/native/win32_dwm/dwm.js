@@ -76,4 +76,4 @@ module.exports = class DWM{
 		const version = os.release().split(".").map(x => parseInt(x));
 		return version[0] >= 10 && version[1] >= 0 && version[2] >= 17134;
 	}
-}
+};

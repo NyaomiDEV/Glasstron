@@ -99,4 +99,4 @@ module.exports = class Darwin extends Platform {
 			}
 		});
 	}
-}
+};

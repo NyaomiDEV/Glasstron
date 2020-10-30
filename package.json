@@ -9,7 +9,8 @@
   "scripts": {
     "build-exe": "i686-w64-mingw32-g++ -static -static-libgcc -static-libstdc++ -o native/dwm_exec.exe src/native/win32_dwm/lib/exec.cpp",
     "build": "node ./binding.js",
-    "postinstall": "npm run build",
+    "lint": "eslint src test",
+    "postinstall": "node ./binding.js",
     "test": "electron ./test"
   },
   "repository": {
@@ -31,7 +32,13 @@
   },
   "homepage": "https://github.com/AryToNeX/Glasstron#readme",
   "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/eslint-parser": "^7.12.1",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
     "electron": "~9",
+    "eslint": "^7.12.1",
     "windowbar": "^1.7.3"
   },
   "dependencies": {

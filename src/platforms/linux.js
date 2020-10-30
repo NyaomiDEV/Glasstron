@@ -30,12 +30,14 @@ module.exports = class Linux extends Platform {
 		super.init(win, _options);
 	}
 	
+	// eslint-disable-next-line no-unused-vars
 	static async asyncInit(win, _options){
 		const wm = await Linux._getXWindowManager();
 		switch(wm){
 			case "KWin":
 				// Update the kwin blur property
-				const updateKWin = async () => {if(win.blurCornerRadius !== 0) this._kwin_setBlur(win, await this._kwin_getBlur(win))};
+				// eslint-disable-next-line no-case-declarations
+				const updateKWin = async () => {if(win.blurCornerRadius !== 0) this._kwin_setBlur(win, await this._kwin_getBlur(win));};
 				win.on("will-resize", updateKWin);
 				win.on("resize", updateKWin);
 				break;
@@ -47,11 +49,9 @@ module.exports = class Linux extends Platform {
 		switch(wm){
 			case "KWin":
 				return this._kwin_setBlur(win, bool);
-				break;
 			case "GNOME Shell":
 				// the line of code below makes sense actually, I swear
 				return this._blurProvider_setSigma(win, bool ? win.blurGnomeSigma : 0);
-				break;
 			default:
 				break;
 		}
@@ -62,10 +62,8 @@ module.exports = class Linux extends Platform {
 		switch(wm){
 			case "KWin":
 				return this._kwin_getBlur(win);
-				break;
 			case "GNOME Shell":
 				return this._blurProvider_getBlur(win);
-				break;
 			default:
 				break;
 		}
@@ -88,13 +86,13 @@ module.exports = class Linux extends Platform {
 	 */
 	static _kwin_setBlur(win, bool){
 		if(bool)
-			return x11.changeXProperty(
-				win.getNativeWindowHandle().readUInt32LE(),
-				"_KDE_NET_WM_BLUR_BEHIND_REGION",
-				"CARDINAL",
-				32,
-				win.blurCornerRadius !== 0 ? Utils.getRegions(0, 0, win.getSize()[0], win.getSize()[1], win.blurCornerRadius).flat() : [0]
-			);
+		{return x11.changeXProperty(
+			win.getNativeWindowHandle().readUInt32LE(),
+			"_KDE_NET_WM_BLUR_BEHIND_REGION",
+			"CARDINAL",
+			32,
+			win.blurCornerRadius !== 0 ? Utils.getRegions(0, 0, win.getSize()[0], win.getSize()[1], win.blurCornerRadius).flat() : [0]
+		);}
 		return x11.deleteXProperty(
 			win.getNativeWindowHandle().readUInt32LE(),
 			"_KDE_NET_WM_BLUR_BEHIND_REGION"
@@ -119,7 +117,7 @@ module.exports = class Linux extends Platform {
 				blurCornerRadius = _radius;
 				this._kwin_setBlur(win, await this._kwin_getBlur(win));
 			}
-		})
+		});
 	}
 
 	/**
@@ -138,18 +136,18 @@ module.exports = class Linux extends Platform {
 		
 		let index = -1;
 		for(let i in hints)
-			if(hints[i]["blur-provider"])
-				index = i;
+		{if(hints[i]["blur-provider"])
+			index = i;}
 		
-		if(index == -1){
-			if(sigma != 0)
+		if(index === -1){
+			if(sigma !== 0)
 				hints.push({"blur-provider": sigma.toString()});
 		}else{
-			if(sigma != 0)
+			if(sigma !== 0)
 				hints[index]["blur-provider"] = sigma.toString();
 			else{
 				delete hints[index]["blur-provider"];
-				if(Object.keys(hints[index]).length == 0){
+				if(Object.keys(hints[index]).length === 0){
 					delete hints[index];
 					hints = hints.filter(x => typeof x != "undefined");
 				}
@@ -162,9 +160,9 @@ module.exports = class Linux extends Platform {
 	static async _blurProvider_getSigma(win){
 		const hints = await this._mutter_getHints(win);
 		for(let i in hints)
-			if(hints[i]["blur-provider"])
-				return parseInt(hints[i]["blur-provider"]);
-			return undefined;
+		{if(hints[i]["blur-provider"])
+			return parseInt(hints[i]["blur-provider"]);}
+		return undefined;
 	}
 
 	static _blurProvider_init(win, _initialSigma = 100){
@@ -182,9 +180,9 @@ module.exports = class Linux extends Platform {
 
 				_blurGnomeSigma = _sigma;
 				const _currentSigma = await this._blurProvider_getSigma(win);
-				if(typeof _currentSigma !== "undefined" && _currentSigma !== 0){
+				if(typeof _currentSigma !== "undefined" && _currentSigma !== 0)
 					this._blurProvider_setSigma(win, _sigma); // pass to x11
-				}
+				
 			}
 		});
 	}
@@ -217,4 +215,4 @@ module.exports = class Linux extends Platform {
 			strings
 		);
 	}
-}
+};

@@ -59,7 +59,6 @@ module.exports = class Win32 extends Platform {
 				return win.getDWM().disable();
 			default:
 				throw "Blur type is not recognized: please specify one of 'acrylic', 'blurbehind', 'transparent', 'none'.";
-				return false;
 		}
 	}
 
@@ -84,7 +83,7 @@ module.exports = class Win32 extends Platform {
 		Object.defineProperty(win, "blurType", {
 			get: () => _blurType,
 			set: async (_newBlurType) => {
-				if(_newBlurType == "none"){
+				if(_newBlurType === "none"){
 					await win.setBlur(false);
 					return;
 				}
@@ -94,4 +93,4 @@ module.exports = class Win32 extends Platform {
 			}
 		});
 	}
-}
+};

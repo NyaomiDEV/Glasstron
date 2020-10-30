@@ -30,7 +30,7 @@ module.exports = class DWMExec {
 	}
 
 	setWindowCompositionAttribute(hwnd, mode, tint){
-		return this._p = this._p.then(() => {return execFile(this.dwm, [hwnd, mode, tint])});
+		return this._p = this._p.then(() => {return execFile(this.dwm, [hwnd, mode, tint]);});
 	}
 
-}
+};
