@@ -74,7 +74,7 @@ module.exports = class Darwin extends Platform {
 				// Update the actual vibrancy if it's not null
 				if(_vibrancy[1] !== null){
 					_vibrancy[1] = _vibrancy[0];
-					originalFunction(_vibrancy);
+					originalFunction(_vibrancy[1]);
 				}
 			}
 		});
