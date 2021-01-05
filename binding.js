@@ -44,7 +44,7 @@ async function removeRecursive(path){
 		for(let subpath of sub){
 			await removeRecursive(_path.join(path, subpath));
 		}
-		fs.rmdir(path);
+		await fs.rmdir(path);
 	}else
 		await fs.unlink(path);
 }
