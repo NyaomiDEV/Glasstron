@@ -16,7 +16,6 @@
 "use strict";
 
 const BrowserWindow = require("./browser_window.js");
-const Hacks = require("./hacks.js");
 const Utils = require("./utils.js");
 
 const __module = findModule("__glasstron");
@@ -25,46 +24,6 @@ if(typeof __module !== "undefined")
 else{
 	module.exports = {
 		BrowserWindow,
-		Hacks,
-		// DEPRECATED STUFF FROM NOW ON
-		init: function(){
-			console.warn("Glasstron.init() is deprecated! Please use the Glasstron.BrowserWindow export");
-			Hacks.injectOnElectron();
-			if(process.platform === "linux")
-				Hacks.delayReadyEvent();
-		},
-		update: function(win, values){
-			console.warn("Glasstron.update() is deprecated! Please use the Glasstron.BrowserWindow export");
-			// HACKY DEPRECATED CODE FROM HERE!!
-			const mappings = { // Glasstron platform types <--- process.platform types
-				"win32": "windows",
-				"linux": "linux",
-				"darwin": "macos",
-				"freebsd": "freebsd",
-				"sunos": "sunos"
-			};
-			
-			let bool = false;
-			if(values[mappings[process.platform]])
-				values = values[mappings[process.platform]]; // shorten
-			switch(process.platform){
-				case "win32":
-					bool = ["acrylic","transparent","blurbehind"].includes(values.blurType);
-					win.blurType = values.blurType;
-					break;
-				case "darwin":
-					bool = values.vibrancy !== "" && values.vibrancy !== null;
-					win.vibrancy = values.vibrancy;
-					break;
-				case "linux":
-					bool = values.requestBlur;
-					break;
-				default:
-					throw "Unsupported. Please use Glasstron.BrowserWindow instead of Glasstron.blur()";
-			}
-			
-			return win.setBlur(bool);
-		},
 		getPlatform: function(){
 			return Utils.getPlatform();
 		}
@@ -74,7 +33,8 @@ else{
 
 function findModule(prop){
 	for(let module in require.cache)
-		if(typeof require.cache[module][prop] !== "undefined") return require.cache[module];
+		if(typeof require.cache[module][prop] !== "undefined")
+			return require.cache[module];
 	
 	return undefined;
 }

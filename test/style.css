@@ -3,10 +3,9 @@ body {
 }
 
 #__container {
-	border-radius: 20px;
 	width: 100%;
 	height: 100%;
-	overflow: auto;
+	overflow: hidden;
 }
 
 h1 {

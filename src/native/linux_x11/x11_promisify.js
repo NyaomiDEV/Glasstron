@@ -59,7 +59,7 @@ module.exports = class X11Promisify {
 	}
 
 	static deleteProperty(id, prop){
-		return new Promise((resolve) => {			
+		return new Promise((resolve) => {
 			x11.createClient((err, display) => {
 				let X = display.client;
 				if(typeof id === "undefined")

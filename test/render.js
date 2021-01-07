@@ -82,5 +82,11 @@ if(process.platform === "linux"){
 			};
 			gnomeSlider.classList.remove("hidden");
 		}
+		
+		if(res === "KWin"){
+			electron.ipcRenderer.on("maximized", (e, res) => {
+				document.getElementById("__container").style["border-radius"] = res ? "0" : "20px";
+			});
+		}
 	});
 }

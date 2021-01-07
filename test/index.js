@@ -20,7 +20,7 @@ function spawnWindow(){
 		title: "Glasstron test window",
 		autoHideMenuBar: true,
 		frame: false, // this is a requirement for transparent windows it seems
-		show: true,
+		show: false,
 		blur: true,
 		blurType: "blurbehind",
 		blurGnomeSigma: 100,
@@ -32,20 +32,29 @@ function spawnWindow(){
 	});
 	
 	win.webContents.loadURL(`file://${__dirname}/index.html`);
+    
+	if(process.platform === "linux"){
+			win.on("resize", () => {
+				win.webContents.send("maximized", !win.isNormal());
+			});
+	}
 	
+	win.on("ready-to-show", () => {
+		checkDarkTheme(win);
+		if(process.platform === "linux") win.webContents.send("maximized", !win.isNormal());
+		if(process.platform === "win32" && win.getDWM().supportsAcrylic()){
+			acrylicWorkaround(win, 60);
+			win.webContents.send("supportsAcrylic");
+		}
+		win.show();
+	});
+
 	if(process.platform === "win32"){
 		electron.ipcMain.on("blurTypeChange", (e, value) => {
 			const win = electron.BrowserWindow.fromWebContents(e.sender);
 			if(win !== null){
 				win.blurType = value;
 				e.sender.send("blurTypeChanged", win.blurType);
-			}
-		});
-		win.webContents.on("did-finish-load", () => {
-			checkDarkTheme();
-			if(win.getDWM().supportsAcrylic()){
-				acrylicWorkaround(win, 60);
-				win.webContents.send("supportsAcrylic");
 			}
 		});
 	}
@@ -85,10 +94,8 @@ function spawnWindow(){
 	return win;
 }
 
-function checkDarkTheme(){
-	electron.BrowserWindow.getAllWindows().forEach((win) => {
+function checkDarkTheme(win){
 		win.webContents.send("darkTheme", electron.nativeTheme.shouldUseDarkColors);
-	});
 }
 
 function acrylicWorkaround(win, pollingRate = 60){
