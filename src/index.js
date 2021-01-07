@@ -33,8 +33,8 @@ else{
 
 function findModule(prop){
 	for(let module in require.cache)
-		if(typeof require.cache[module][prop] !== "undefined")
-			return require.cache[module];
+	{if(typeof require.cache[module][prop] !== "undefined")
+		return require.cache[module];}
 	
 	return undefined;
 }

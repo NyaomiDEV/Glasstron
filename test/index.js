@@ -34,9 +34,9 @@ function spawnWindow(){
 	win.webContents.loadURL(`file://${__dirname}/index.html`);
     
 	if(process.platform === "linux"){
-			win.on("resize", () => {
-				win.webContents.send("maximized", !win.isNormal());
-			});
+		win.on("resize", () => {
+			win.webContents.send("maximized", !win.isNormal());
+		});
 	}
 	
 	win.on("ready-to-show", () => {
@@ -95,7 +95,7 @@ function spawnWindow(){
 }
 
 function checkDarkTheme(win){
-		win.webContents.send("darkTheme", electron.nativeTheme.shouldUseDarkColors);
+	win.webContents.send("darkTheme", electron.nativeTheme.shouldUseDarkColors);
 }
 
 function acrylicWorkaround(win, pollingRate = 60){
