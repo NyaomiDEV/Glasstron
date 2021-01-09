@@ -10,12 +10,6 @@ A simple and reliable API to achieve blur and transparency across platforms (Win
 [![paypal](https://img.shields.io/badge/donate-on%20paypal-0079CD?logo=paypal&style=for-the-badge)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y7ZAFZ2H56FD4)
 [![discord](https://img.shields.io/discord/696696149301657640?color=7289DA&label=chat&logo=discord&logoColor=ffffff&style=for-the-badge)](https://discord.gg/vtswnGC4tH)
 
-## Note for macOS users
-
-Recent changes in Glasstron's core seemingly broke macOS vibrancy.
-
-I still don't own a macOS system to test this out for myself, so contributions are always welcone.
-
 ## Quickstart
 ```bash
 $ npm install glasstron
