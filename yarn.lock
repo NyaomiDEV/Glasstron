@@ -3,9 +3,9 @@
 
 
 "@babel/cli@^7.12.1":
-  version "7.13.0"
-  resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.13.0.tgz#48e77614e897615ca299bece587b68a70723ff4c"
-  integrity sha512-y5AohgeVhU+wO5kU1WGMLdocFj83xCxVjsVFa2ilII8NEwmBZvx7Ambq621FbFIK68loYJ9p43nfoi6es+rzSA==
+  version "7.13.10"
+  resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.13.10.tgz#3a9254cbe806639c8ca4ebd49ebe54b4267b88c9"
+  integrity sha512-lYSBC7B4B9hJ7sv0Ojx1BrGhuzCoOIYfLjd+Xpd4rOzdS+a47yi8voV8vFkfjlZR1N5qZO7ixOCbobUdT304PQ==
   dependencies:
     commander "^4.0.1"
     convert-source-map "^1.1.0"
@@ -34,11 +34,6 @@
     "@babel/highlight" "^7.12.13"
 
 "@babel/compat-data@^7.13.0", "@babel/compat-data@^7.13.8":
-  version "7.13.8"
-  resolved "https://registry.yarnpkg.com/@babel/compat-data/-/compat-data-7.13.8.tgz#5b783b9808f15cef71547f1b691f34f8ff6003a6"
-  integrity sha512-EaI33z19T4qN3xLXsGf48M2cDqa6ei9tPZlfLdb2HC+e/cFtREiRd8hdSqDbwdLB0/+gLwqJmCYASH0z2bUdog==
-
-"@babel/compat-data@^7.13.8":
   version "7.13.8"
   resolved "https://registry.yarnpkg.com/@babel/compat-data/-/compat-data-7.13.8.tgz#5b783b9808f15cef71547f1b691f34f8ff6003a6"
   integrity sha512-EaI33z19T4qN3xLXsGf48M2cDqa6ei9tPZlfLdb2HC+e/cFtREiRd8hdSqDbwdLB0/+gLwqJmCYASH0z2bUdog==
