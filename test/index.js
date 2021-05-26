@@ -27,7 +27,8 @@ function spawnWindow(){
 		blurCornerRadius: 20,
 		vibrancy: "fullscreen-ui",
 		webPreferences: {
-			nodeIntegration: true
+			nodeIntegration: true,
+            		contextIsolation: false
 		}
 	});
 	
