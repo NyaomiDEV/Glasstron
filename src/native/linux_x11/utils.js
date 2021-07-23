@@ -15,7 +15,7 @@
 */
 "use strict";
 
-module.exports = class X11Decode {
+module.exports = class X11Utils {
 	
 	static decodeFromTypeName(typeName, buffer){
 		switch(typeName){
@@ -63,6 +63,56 @@ module.exports = class X11Decode {
 			state: buffer.readUInt32LE(0),
 			icon: buffer.readUInt32LE(4)
 		};
+	}
+
+	static encodeFromTypeName(typeName, data) {
+		switch (typeName) {
+			default:
+				throw new Error("Unsupported type " + typeName);
+			case "WINDOW":
+			case "CARDINAL":
+			case "ATOM":
+			case "INTEGER":
+				return this.encodeNumbers(data);
+			case "UTF8_STRING":
+				return this.encodeUTF8String(data);
+			case "WM_STATE":
+				return this.encodeWmState(data);
+		}
+	}
+
+	static encodeNumbers(data) {
+		let result = [];
+		if (data.length > 0) {
+			result = Buffer.alloc(4 * data.length);
+			data.forEach((element, index) => {
+				result.writeUInt32LE(element, 4 * index);
+			});
+		}
+		return result;
+	}
+
+	static encodeUTF8String(data, null_terminated = false) {
+		let _data = [];
+		let length = 0;
+		data.forEach((element, index) => {
+			_data.push(Buffer.from(element));
+			length += element.length;
+			if ((index !== data.length - 1) || null_terminated) {
+				_data.push(Buffer.from([0]));
+				++length;
+			}
+		});
+		return Buffer.concat(_data, length);
+	}
+
+	static encodeWmState(data) {
+		let result = Buffer.alloc(8);
+		result.writeUInt32LE(data.state, 0);
+		if (!data.icon)
+			data.icon = 0;
+		result.writeUInt32LE(data.icon, 4);
+		return result;
 	}
 
 };

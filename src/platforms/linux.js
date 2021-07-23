@@ -15,10 +15,10 @@
 */
 "use strict";
 
-const Platform = require("./_platform.js");
-const Utils = require("../utils.js");
+const Platform = require("./_platform");
+const Utils = require("../utils");
 
-const x11 = require("../native/linux_x11/linux_x11.js");
+const x11 = require("../native/linux_x11");
 
 module.exports = class Linux extends Platform {
 
@@ -32,6 +32,8 @@ module.exports = class Linux extends Platform {
 	
 	// eslint-disable-next-line no-unused-vars
 	static async asyncInit(win, _options){
+		await x11.createConnection();
+
 		const wm = await Linux._getXWindowManager();
 		switch(wm){
 			case "KWin":
@@ -45,6 +47,8 @@ module.exports = class Linux extends Platform {
 	}
 
 	static async setBlur(win, bool){
+		await x11.awaitConnection();
+
 		const wm = await Linux._getXWindowManager();
 		switch(wm){
 			case "KWin":

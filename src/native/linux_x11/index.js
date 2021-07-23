@@ -15,19 +15,28 @@
 */
 "use strict";
 
-const x11 = require("./x11_promisify.js");
-const decoder = require("./decode.js");
-const encoder = require("./encode.js");
+const x = require("./x11");
+const utils = require("./utils");
+
+const x11 = new x();
 
 module.exports = class LinuxX11 {
+
+	static createConnection(){
+		return x11.createConnection();
+	}
+
+	static awaitConnection(){
+		return x11.awaitConnection();
+	}
 
 	static async getXWindowManager(){
 		const wmCheckProp = await x11.getAtomID("_NET_SUPPORTING_WM_CHECK");
 		const wmCheck = await x11.getPropertyData(undefined, wmCheckProp);
-		const wmid = decoder.decodeNumbers(wmCheck.data)[0];
+		const wmid = utils.decodeNumbers(wmCheck.data)[0];
 		const wmNameProp = await x11.getAtomID("_NET_WM_NAME");
 		const data = await x11.getPropertyData(wmid, wmNameProp);
-		return decoder.decodeUTF8String(data.data)[0];
+		return utils.decodeUTF8String(data.data)[0];
 	}
 
 	static async getXProperty(xid, propName){
@@ -36,13 +45,13 @@ module.exports = class LinuxX11 {
 		if(typeof data.typeName === "undefined")
 			return undefined;
 		
-		return decoder.decodeFromTypeName(data.typeName, data.data);
+		return utils.decodeFromTypeName(data.typeName, data.data);
 	}
 
 	static async changeXProperty(xid, propName, typeName, format, data){
 		const prop = await x11.getAtomID(propName);
 		const type = await x11.getAtomID(typeName);
-		const _encoded = encoder.encodeFromTypeName(typeName, data);
+		const _encoded = utils.encodeFromTypeName(typeName, data);
 		return x11.setPropertyData(xid, prop, type, format, _encoded);
 	}
 

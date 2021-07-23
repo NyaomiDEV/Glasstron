@@ -2,7 +2,12 @@
 
 const glasstron = require("..");
 const electron = require("electron");
+
+if(process.platform === "linux")
+	electron.app.commandLine.appendSwitch("use-gl", "desktop");
+
 electron.app.commandLine.appendSwitch("enable-transparent-visuals");
+
 electron.app.on("ready", () => {
 	setTimeout(
 		spawnWindow,
