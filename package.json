@@ -30,6 +30,14 @@
   "bugs": {
     "url": "https://github.com/AryToNeX/Glasstron/issues"
   },
+  "files": [
+    "native/*",
+    "src/*",
+    "LICENSE",
+    "binding.gyp",
+    "binding.js",
+    "package.json"
+  ],
   "homepage": "https://github.com/AryToNeX/Glasstron#readme",
   "devDependencies": {
     "@babel/cli": "^7.12.1",
