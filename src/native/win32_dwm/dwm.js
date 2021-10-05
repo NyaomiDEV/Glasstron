@@ -60,7 +60,7 @@ module.exports = class DWM{
 		return this.setWindowCompositionAttribute(3, tint);
 	}
 
-	setAcrylic(tint = 0x00ffffff){
+	setAcrylic(tint = 0x00404040){
 		if(!this.supportsAcrylic()) return this.setBlurBehind(tint);
 		return this.setWindowCompositionAttribute(4, tint);
 	}
