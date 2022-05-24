@@ -84,7 +84,7 @@ Or perhaps you want to send me a hug and a coffee? You can do so [here](https://
 - Want yours featured? Issue a PR!
 
 ## Projects related to Glasstron
-- [blur-provider](https://github.com/CorvetteCole/blur-provider) is used by Glasstron to request blurring of windows to the GNOME Shell.
+- [Blur my Shell](https://github.com/aunetx/blur-my-shell) is used by Glasstron to request blurring of windows to the GNOME Shell.
 
 ## License
 ### Glasstron is licensed under the Apache 2.0 License
