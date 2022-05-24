@@ -4,9 +4,9 @@ A simple and reliable API to achieve blur and transparency across platforms (Win
 
 [![npm](https://img.shields.io/npm/dt/glasstron?logo=npm&style=for-the-badge)](https://www.npmjs.com/package/glasstron)
 [![version](https://img.shields.io/npm/v/glasstron?label=version&style=for-the-badge)](https://www.npmjs.com/package/glasstron)
-[![indev version](https://img.shields.io/github/package-json/v/arytonex/glasstron?label=indev%20version&style=for-the-badge)](https://github.com/AryToNeX/Glasstron/tree/master)
+[![indev version](https://img.shields.io/github/package-json/v/nyaomidev/glasstron?label=indev%20version&style=for-the-badge)](https://github.com/NyaomiDEV/Glasstron/tree/master)
 [![ko-fi](https://img.shields.io/badge/donate-on%20ko--fi-29ABE0?logo=ko-fi&style=for-the-badge&logoColor=FFFFFF)](https://ko-fi.com/K3K3D0E0)
-[![patreon](https://img.shields.io/badge/pledge-on%20patreon-FF424D?logo=patreon&style=for-the-badge&logoColor=FFFFFF)](https://patreon.com/arytonex)
+[![patreon](https://img.shields.io/badge/pledge-on%20patreon-FF424D?logo=patreon&style=for-the-badge&logoColor=FFFFFF)](https://patreon.com/nyaomipic)
 [![paypal](https://img.shields.io/badge/donate-on%20paypal-0079CD?logo=paypal&style=for-the-badge)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y7ZAFZ2H56FD4)
 
 ## Quickstart
@@ -65,7 +65,7 @@ Glasstron takes care of those problems and it also aims to support composition e
 ## Design and features
 Glasstron provides a custom version of Electron's `BrowserWindow` export that's capable to deal with the common problems discussed earlier on its own. This means that it's simple to adopt and it doesn't break existing code as every call to broken methods is wrapped so nothing bad happens.
 
-It also replaces the functionality of `win.setBackgroundColor()`: since there's no way to set a background color without breaking vibrancy materials on macOS, it will set the background color as injected CSS on the `:root` CSS selector. It can be overridden by CSS stylesheets, so be careful! (this was intended -- check the other project [Glasscord](https://github.com/AryToNeX/Glasscord) to know why).
+It also replaces the functionality of `win.setBackgroundColor()`: since there's no way to set a background color without breaking vibrancy materials on macOS, it will set the background color as injected CSS on the `:root` CSS selector. It can be overridden by CSS stylesheets, so be careful! (this was intended).
 
 Note that Glasstron cannot do all the hard work (as with it prototype pollution will occur).
 Please look inside `src/hacks.js` to see common problems Glasstron used to solve automagically up until version 0.0.3.
@@ -73,7 +73,7 @@ Please look inside `src/hacks.js` to see common problems Glasstron used to solve
 ## I want to contribute to this madness!
 Did you find a bug? File it in the issues section!
 Do you know how to fix stuff? Make a pull request!
-Or perhaps you want to send me a hug and a coffee? You can do so [here](https://ko-fi.com/arytonex)!
+Or perhaps you want to send me a hug and a coffee? You can do so [here](https://ko-fi.com/nyaomidev)!
 
 ## Awesome applications using Glasstron
 - [Android Messages](https://github.com/katacarbix/android-messages) by katacarbix
@@ -84,13 +84,12 @@ Or perhaps you want to send me a hug and a coffee? You can do so [here](https://
 - Want yours featured? Issue a PR!
 
 ## Projects related to Glasstron
-- [Glasscord](https://github.com/AryToNeX/Glasscord) uses Glasstron to inject composition in any* Electron app.
 - [Blur my Shell](https://github.com/aunetx/blur-my-shell) is used by Glasstron to request blurring of windows to the GNOME Shell.
 
 ## License
 ### Glasstron is licensed under the Apache 2.0 License
 ```
-Copyright 2020 AryToNeX
+Copyright 2020-2022 Naomi Calabretta
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
