@@ -80,6 +80,7 @@ Or perhaps you want to send me a hug and a coffee? You can do so [here](https://
 - [Terminus](https://github.com/Eugeny/terminus) by Eugeny
 - [Soundglass](https://github.com/pixldev/soundglass) by pixldev
 - [Lightcord](https://github.com/Lightcord/Lightcord) by Lightcord
+- [FalixNodes Desktop](https://github.com/FalixNodes-Software/FalixNodes-Desktop) by KorbsStudio
 - [Glasstron Quick Start](https://github.com/KorbsStudio/glasstron-quick-start) by KorbsStudio
 - Want yours featured? Issue a PR!
 
