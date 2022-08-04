@@ -45,7 +45,7 @@
     "@babel/eslint-parser": "^7.12.1",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
-    "electron": "~15",
+    "electron": "~20",
     "eslint": "^8.0.1",
     "windowbar": "^1.7.3"
   },
