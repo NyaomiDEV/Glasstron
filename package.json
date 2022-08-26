@@ -50,7 +50,7 @@
     "windowbar": "^1.7.3"
   },
   "dependencies": {
-    "node-addon-api": "^4.0.0",
+    "node-addon-api": "^5.0.0",
     "x11": "^2.3.0"
   }
 }
