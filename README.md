@@ -1,3 +1,5 @@
+# This project is EOL. Please use other equivalent modules for your newer apps.
+
 # Glasstron
 
 A simple and reliable API to achieve blur and transparency across platforms (Windows/Linux/MacOS), so you don't have to panic with Electron bugs and messy code! Plus, it's really simple!
